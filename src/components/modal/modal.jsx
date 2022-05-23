@@ -4,15 +4,16 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types'
 import { ModalOverlay } from '../modalOverlay/modalOverlay';
 import { createPortal } from 'react-dom';
+import { ESC_KEYCODE } from '../../constants/constants';
 
 export const Modal = memo(({onClose,headerText,children}) => {
 
   const handleClickButton = () => {
     setTimeout(onClose,0) // magic
   }
-
+  
   const escFunction = useCallback((event) => {
-    if(event.keyCode === 27) {
+    if(event.keyCode === ESC_KEYCODE) {
       onClose();
     }
   },[onClose]) 

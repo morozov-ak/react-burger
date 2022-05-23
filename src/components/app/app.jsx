@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import NavigationPanel from '../appHeader/appHeader';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import styles from './app.module.css'
-//import ingredients from '../../utils/data.json'
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
 import { fetchIngredients } from '../../api/fetchIngredients';
 
