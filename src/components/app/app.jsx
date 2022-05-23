@@ -9,10 +9,20 @@ import { fetchIngredients } from '../../api/fetchIngredients';
 function App() {
 
   const [ingredients, setIngredients] = useState([])
+  const [error, setError] = useState('')
 
   useEffect(()=>{
-    fetchIngredients({setIngredients})
+    fetchIngredients({setIngredients,setError})
   },[])
+
+  useEffect(
+    ()=>{
+      if(error){
+        alert(error)
+      }
+    }
+    ,[error]
+  )
 
   return (
     <main className={styles.app}>

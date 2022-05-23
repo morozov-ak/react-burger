@@ -3,8 +3,6 @@ import { ingredient } from '../../types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types'
 import { memo, useCallback, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { ModalOverlay } from '../modalOverlay/modalOverlay';
 import { Modal } from '../modal/modal';
 import { IngredientDetails } from '../ingredientDetails/ingredientDetails';
 
@@ -15,13 +13,6 @@ const BurgerIngredient = memo(({ingredient,count}) => {
     setIsOpenModal(true)
   },[setIsOpenModal])
 
-  const handleCloseModal = useCallback(()=>{
-    console.log('resieved')
-    setIsOpenModal(false)
-  },[])
-
-
-
   return (
       <button className={`mb-4 ${styles.ingredient}`} onClick={handleOpenModal}>
             {Boolean(count) && <Counter count={count} size='default'/>}
@@ -29,14 +20,11 @@ const BurgerIngredient = memo(({ingredient,count}) => {
             <p className={`text text_type_digits-medium mb-1 mt-1 ${styles.ingredient_name}`}>{ingredient.price} <CurrencyIcon/></p>
             <p className={`text text_type_main-default ${styles.ingredient_name}`}>{ingredient.name}</p>
             
-            {isOpenModal && createPortal(
-              <ModalOverlay onClose={handleCloseModal} >
+            {isOpenModal && 
                 <Modal  onClose={setIsOpenModal} headerText='Детали ингредиента'>
                   <IngredientDetails ingredient={ingredient}/>
                 </Modal>
-              </ModalOverlay>
-              , document.getElementById('modal')
-        )}
+            }
       </button>
   );
 })

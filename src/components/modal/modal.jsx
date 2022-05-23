@@ -2,6 +2,8 @@ import React, { memo, useCallback, useEffect } from 'react';
 import styles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types'
+import { ModalOverlay } from '../modalOverlay/modalOverlay';
+import { createPortal } from 'react-dom';
 
 export const Modal = memo(({onClose,headerText,children}) => {
 
@@ -20,7 +22,9 @@ export const Modal = memo(({onClose,headerText,children}) => {
     return ()=>{document.removeEventListener("keydown", escFunction, false);}
   },[escFunction])
 
-  return (
+  return (createPortal(
+    <>
+      <ModalOverlay onClose={onClose}/>
       <section className={`${styles.modal}`} >
         <header className={`ml-10 mt-10 mr-10 ${styles.header}`} >  
           {headerText && <p className="text text_type_main-large">{headerText}</p>}
@@ -29,7 +33,9 @@ export const Modal = memo(({onClose,headerText,children}) => {
           </button>
         </header>
         {children}
-      </section>
+      </section>  
+    </>, 
+    document.getElementById('modal'))
   );
 }) 
 

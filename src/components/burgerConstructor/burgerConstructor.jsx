@@ -1,8 +1,6 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { memo,useState,useCallback } from 'react';
-import { createPortal } from 'react-dom';
 import { Modal } from '../modal/modal';
-import { ModalOverlay } from '../modalOverlay/modalOverlay';
 import { OrderDetails } from '../orderDetails/orderDetails';
 import styles from './burgerConstructor.module.css'
 import PropTypes from 'prop-types';
@@ -15,11 +13,6 @@ const BurgerConstructor = memo(({ingredients}) => {
     const handleOpenModal = useCallback(()=>{
       setIsOpenModal(true)
     },[setIsOpenModal])
-  
-    const handleCloseModal = useCallback(()=>{
-      console.log('resieved')
-      setIsOpenModal(false)
-    },[])
 
     return (
         <section className={`ml-10 ${styles.ingredients}`}>
@@ -74,14 +67,11 @@ const BurgerConstructor = memo(({ingredients}) => {
               </Button>
           </div>
 
-          {isOpenModal && createPortal(
-              <ModalOverlay onClose={handleCloseModal} >
+          {isOpenModal && 
                 <Modal  onClose={setIsOpenModal}>
                   <OrderDetails orderNumber={3434}/>
                 </Modal>
-              </ModalOverlay>
-              , document.getElementById('modal')
-        )}
+          }
           
       </section>
     );

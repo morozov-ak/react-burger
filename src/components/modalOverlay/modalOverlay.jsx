@@ -2,7 +2,7 @@ import React, {  useRef, useEffect, memo, useCallback } from 'react';
 import styles from './modalOverlay.module.css';
 import PropTypes from 'prop-types'
 
-export const ModalOverlay = memo(({children, onClose}) => {
+export const ModalOverlay = memo(({onClose}) => {
 
   const overlayRef = useRef(null)
 
@@ -21,16 +21,11 @@ export const ModalOverlay = memo(({children, onClose}) => {
   )
 
   return (
-      <section className={`${styles.overlay}`} ref={overlayRef}>
-        <div className={`${styles.children}`}>
-          {children}
-        </div>
-      </section>
+      <section className={`${styles.overlay}`} ref={overlayRef}/>
   );
 }) 
 
 ModalOverlay.propTypes = {
-  children: PropTypes.element,
   onClose:  PropTypes.func,
 }
 
