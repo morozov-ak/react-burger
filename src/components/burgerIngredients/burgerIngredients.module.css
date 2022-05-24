@@ -1,0 +1,31 @@
+.ingredients {
+    width: 600px;
+    height: calc(100vh - 188px); 
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+}
+
+.ingredient_tabs {
+    display: flex;
+    z-index: 5;
+}
+
+.scroll {
+    height: calc(100% - 56px);
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.ingredients_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 8px;
+}
+
+.loader {
+    position: absolute;
+    left:50%;
+    top :50%;
+    transform: translate(-50%, -50%) 
+}

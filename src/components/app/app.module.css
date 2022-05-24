@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    height: 100%;
+    background-color: #131316;
+}
+
+.app {
+    margin: 0;
+    background-color: #131316;
+    height: 100%;
+}
+
+.content {
+    overflow: hidden;
+    width: 1240px;
+    margin: 0 auto;
+    height: calc(100vh - 88px);
+}
+
+.constructor_wrapper {
+    display: flex;
+    flex-direction: row;
+}

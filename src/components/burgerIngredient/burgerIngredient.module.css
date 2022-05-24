@@ -1,0 +1,21 @@
+.ingredient {
+    background-color: transparent;
+    color: #F2F2F3;
+    position: relative;
+    box-sizing: border-box;
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+}
+
+.ingredient_name {
+    text-align: center;
+}
+
+
+
+
+

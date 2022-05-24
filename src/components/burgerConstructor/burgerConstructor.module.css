@@ -1,0 +1,41 @@
+.ingredients {
+    width: 600px;
+    height: calc(100vh - 188px); 
+    position: relative;
+
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.burger_element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.scrollable_ingredients {
+    max-height: calc(100vh - 500px);
+    overflow: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.constructor_footer {
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.currency {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
