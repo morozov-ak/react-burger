@@ -4,9 +4,29 @@ import styles from './burgerIngredients.module.css'
 import PropTypes from 'prop-types';
 import { ingredient } from '../../types';
 import BurgerIngredient from '../burgerIngredient/burgerIngredient';
+import { useInView } from 'react-intersection-observer';
 
 function BurgerIngredients({ingredients}) {
   const [current, setCurrent] = useState('bun');
+
+  const  [ bunRef ]   = useInView({
+    threshold: 1,
+    onChange: (inview) => {
+      if(inview){setCurrent('bun')} 
+    }
+  });
+  const  [ sauceRef ]  = useInView({
+    threshold: 1,
+    onChange: (inview) => {
+      if(inview){setCurrent('sauce')} 
+    }
+  });
+  const [ mainRef  ] = useInView({
+    threshold: 0.3,
+    onChange: (inview) => {
+      if(inview){setCurrent('main')} 
+    }
+  });
 
 
   const handleChangeTab = (e) => {
@@ -42,15 +62,15 @@ function BurgerIngredients({ingredients}) {
            :
           <main className={`custom-scroll ${styles.scroll}`}> 
             <p id='bun' className="text text_type_main-medium mt-10 mb-6" >Булки</p>
-            <div className={`pl-4 ${styles.ingredients_wrapper}`}>
+            <div className={`pl-4 ${styles.ingredients_wrapper}`} ref={bunRef}>
               {ingredientsByCategories.bun.map((ingredient)=><BurgerIngredient key={ingredient._id} ingredient={ingredient} count={Math.floor(Math.random() * 5)}/>)}
             </div>
             <p id='sauce' className="text text_type_main-medium mt-10 mb-6" >Соусы</p>
-            <div className={`pl-4 ${styles.ingredients_wrapper}`}>
+            <div className={`pl-4 ${styles.ingredients_wrapper}`} ref={sauceRef}>
               {ingredientsByCategories.sauce.map((ingredient)=><BurgerIngredient key={ingredient._id} ingredient={ingredient} count={Math.floor(Math.random() * 5)}/>)}
             </div>
-            <p id='main' className="text text_type_main-medium mt-10 mb-6" >Начинки</p>
-            <div className={`pl-4 ${styles.ingredients_wrapper}`}>
+            <p id='main' className="text text_type_main-medium mt-10 mb-6"  >Начинки</p>
+            <div className={`pl-4 ${styles.ingredients_wrapper}`} ref={mainRef}>
               {ingredientsByCategories.main.map((ingredient)=><BurgerIngredient key={ingredient._id} ingredient={ingredient} count={Math.floor(Math.random() * 5)}/>)}
             </div>
 

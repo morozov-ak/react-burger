@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import NavigationPanel from '../appHeader/appHeader';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import styles from './app.module.css'
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
-import { fetchIngredients } from '../../api/fetchIngredients';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchIngredientsReducer } from '../../services/actions/bun';
 
 function App() {
 
-  const [ingredients, setIngredients] = useState([])
-  const [error, setError] = useState('')
+  const ingredients = useSelector(state => state.bun.ingredients);
+  const error = useSelector(state => state.bun.error);
+  const dispatch = useDispatch();
 
   useEffect(()=>{
-    fetchIngredients({setIngredients,setError})
-  },[])
+    dispatch(fetchIngredientsReducer())
+  },[dispatch])
 
-  useEffect(
+  useEffect( 
     ()=>{
       if(error){
         alert(error)

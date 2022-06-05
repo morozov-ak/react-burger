@@ -1,18 +1,26 @@
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { memo,useState,useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Modal } from '../modal/modal';
 import { OrderDetails } from '../orderDetails/orderDetails';
 import styles from './burgerConstructor.module.css'
 import PropTypes from 'prop-types';
 import { ingredient } from '../../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { CLOSE_ORDER_MODAL, OPEN_ORDER_MODAL } from '../../services/actions/bun';
 
 const BurgerConstructor = memo(({ingredients}) => {
 
-    const [isOpenModal, setIsOpenModal] = useState(false)
+  const dispatch = useDispatch()
+
+    const isOpenedOrederModal = useSelector(state => state.bun.isOpenedOrederModal);
 
     const handleOpenModal = useCallback(()=>{
-      setIsOpenModal(true)
-    },[setIsOpenModal])
+      dispatch({type: OPEN_ORDER_MODAL})
+    },[dispatch])
+
+    const handleCloseModal = useCallback(()=>{
+      dispatch({type: CLOSE_ORDER_MODAL})
+    },[dispatch])
 
     return (
         <section className={`ml-10 ${styles.ingredients}`}>
@@ -67,8 +75,8 @@ const BurgerConstructor = memo(({ingredients}) => {
               </Button>
           </div>
 
-          {isOpenModal && 
-                <Modal  onClose={setIsOpenModal}>
+          {isOpenedOrederModal && 
+                <Modal  onClose={handleCloseModal}>
                   <OrderDetails orderNumber={3434}/>
                 </Modal>
           }

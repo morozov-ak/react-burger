@@ -15,5 +15,5 @@ export const IngredientNutritions = memo(({title, value}) => {
 
 IngredientNutritions.propTypes = {
     title: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.number,
 }
