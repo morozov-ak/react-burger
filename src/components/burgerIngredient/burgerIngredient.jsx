@@ -7,6 +7,7 @@ import { Modal } from '../modal/modal';
 import { IngredientDetails } from '../ingredientDetails/ingredientDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { CLOSE_NUTRITIONS_MODAL, OPEN_NUTRITIONS_MODAL } from '../../services/actions/bun';
+import { useDrag } from "react-dnd";
 
 const BurgerIngredient = memo(({ingredient,count}) => {
     const showedIngredientId = useSelector(state => state.bun.showedIngredientId);
@@ -19,10 +20,15 @@ const BurgerIngredient = memo(({ingredient,count}) => {
       dispatch({type: CLOSE_NUTRITIONS_MODAL, showedIngredientId: ''})
     },[dispatch])
 
+    const [, dragRef,dragPreviewRef] = useDrag({
+      type: ingredient.type,
+      item: ingredient
+  });
+
   return (
-      <button className={`mb-4 ${styles.ingredient}`} onClick={handleOpenModal}>
+      <button ref={dragRef} className={`mb-4 ${styles.ingredient}`} onClick={handleOpenModal}>
             {Boolean(count) && <Counter count={count} size='default'/>}
-            <img src={ingredient.image} alt={ingredient.name}/>
+            <img ref={dragPreviewRef} src={ingredient.image} alt={ingredient.name}/>
             <p className={`text text_type_digits-medium mb-1 mt-1 ${styles.ingredient_name}`}>{ingredient.price} <CurrencyIcon/></p>
             <p className={`text text_type_main-default ${styles.ingredient_name}`}>{ingredient.name}</p>
             
