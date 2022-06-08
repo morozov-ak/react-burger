@@ -7,8 +7,6 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../orderDetails/orderDetails";
 import styles from "./burgerConstructor.module.css";
-import PropTypes from "prop-types";
-import { ingredient } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENT,
@@ -19,16 +17,22 @@ import {
 import { useDrop } from "react-dnd";
 import BurgerConstructorIngredient from "../burgerConstructorIngredient/burgerConstructorIngredient";
 
-const BurgerConstructor = memo(({ ingredients }) => {
+const BurgerConstructor = memo(() => {
   const dispatch = useDispatch();
-  const { bun = 0, filling } = useSelector((state) => state.bun.createdBun);
-  const fillingIds = useSelector((state) => state.bun.fillingIds);
-  const { orderId } = useSelector((state) => {
-    return {
-      orderId: state.bun.orderId,
-      orderedBurgerName: state.bun.orderedBurgerName,
-    };
-  });
+  const { bun = 0, filling } = useSelector(
+    (state) => state.burgerConstructor.createdBun
+  );
+  const { fillingIds, bunId, orderId, isOpenedOrederModal } = useSelector(
+    (state) => {
+      return {
+        fillingIds: state.burgerConstructor.fillingIds,
+        bunId: state.burgerConstructor.bunId,
+        orderId: state.order.orderId,
+        isOpenedOrederModal: state.order.isOpenedOrederModal,
+      };
+    }
+  );
+
   const [totalPrice, settotalPrice] = useState(0);
 
   useEffect(() => {
@@ -36,7 +40,7 @@ const BurgerConstructor = memo(({ ingredients }) => {
     settotalPrice(
       price * 2 + filling.reduce((acc, item) => (acc += item.price), 0)
     );
-  }, [bun, filling]);
+  }, [bun, filling, fillingIds.length]);
 
   const [, bunTopDropTarget] = useDrop({
     accept: ["bun"],
@@ -62,14 +66,11 @@ const BurgerConstructor = memo(({ ingredients }) => {
     },
   });
 
-  const isOpenedOrederModal = useSelector(
-    (state) => state.bun.isOpenedOrederModal
-  );
-
   const handleOpenModal = useCallback(() => {
-    dispatch(makeOrder(fillingIds));
+    const orderIds = [bunId[0], ...fillingIds, bunId[1]];
+    dispatch(makeOrder(orderIds));
     dispatch({ type: OPEN_ORDER_MODAL });
-  }, [dispatch, fillingIds]);
+  }, [dispatch, fillingIds, bunId]);
 
   const handleCloseModal = useCallback(() => {
     dispatch({ type: CLOSE_ORDER_MODAL });
@@ -147,9 +148,5 @@ const BurgerConstructor = memo(({ ingredients }) => {
     </section>
   );
 });
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredient),
-};
 
 export default BurgerConstructor;

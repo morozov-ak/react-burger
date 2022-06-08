@@ -43,11 +43,7 @@ const BurgerConstructorIngredient = memo(({ ingredient }) => {
 
   return (
     <div ref={dragRef}>
-      <div
-        key={ingredient.uid}
-        ref={DropTarget}
-        className={`${styles.burger_element}`}
-      >
+      <div ref={DropTarget} className={`${styles.burger_element}`}>
         <div className={`pl-1 pr-1 ${styles.burger_element}`}>
           <DragIcon />
         </div>

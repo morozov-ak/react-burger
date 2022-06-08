@@ -10,6 +10,7 @@ export const ADD_INGREDIENT = "ADD_INGREDIENT";
 export const REMOVE_INGREDIENT = "REMOVE_INGREDIENT";
 export const MOVE_INGREDIENT = "MOVE_INGREDIENT";
 export const SET_ERROR = "SET_ERROR";
+export const RESET_ORDER = "RESET_ORDER";
 export const SUCCESS_ORDER = "SUCCESS_ORDER";
 
 export function fetchIngredientsReducer() {
@@ -29,6 +30,8 @@ export function makeOrder(ingredientsArray) {
       const res = await postOrder(ingredientsArray);
       if (res.success) {
         dispatch({ type: SUCCESS_ORDER, payload: res });
+      } else {
+        dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
       }
     } catch (e) {
       dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });

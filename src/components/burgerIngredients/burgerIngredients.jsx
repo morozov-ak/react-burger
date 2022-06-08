@@ -1,13 +1,13 @@
 import { Logo, Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useMemo, useState } from "react";
 import styles from "./burgerIngredients.module.css";
-import PropTypes from "prop-types";
-import { ingredient } from "../../types";
 import BurgerIngredient from "../burgerIngredient/burgerIngredient";
 import { useInView } from "react-intersection-observer";
+import { useSelector } from "react-redux";
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients() {
   const [current, setCurrent] = useState("bun");
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
 
   const [bunRef] = useInView({
     threshold: 1,
@@ -25,6 +25,7 @@ function BurgerIngredients({ ingredients }) {
       }
     },
   });
+
   const [mainRef] = useInView({
     threshold: 0.3,
     onChange: (inview) => {
@@ -104,9 +105,5 @@ function BurgerIngredients({ ingredients }) {
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredient),
-};
 
 export default BurgerIngredients;

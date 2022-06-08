@@ -4,7 +4,7 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredientDetails/ingredientDetails";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,10 +15,11 @@ import {
 import { useDrag } from "react-dnd";
 
 const BurgerIngredient = memo(({ ingredient }) => {
-  const { showedIngredientId, fillingIds } = useSelector((state) => {
+  const { showedIngredientId, fillingIds, bunId } = useSelector((state) => {
     return {
-      showedIngredientId: state.bun.showedIngredientId,
-      fillingIds: state.bun.fillingIds,
+      showedIngredientId: state.order.showedIngredientId,
+      fillingIds: state.burgerConstructor.fillingIds,
+      bunId: state.burgerConstructor.bunId,
     };
   });
 
@@ -40,7 +41,11 @@ const BurgerIngredient = memo(({ ingredient }) => {
     item: ingredient,
   });
 
-  const count = fillingIds.filter((item) => item === ingredient._id).length;
+  const count = useMemo(() => {
+    return ingredient.type === "bun"
+      ? bunId.filter((item) => item === ingredient._id).length
+      : fillingIds.filter((item) => item === ingredient._id).length;
+  }, [bunId, fillingIds, ingredient]);
 
   return (
     <button
