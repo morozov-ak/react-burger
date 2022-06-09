@@ -1,41 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import NavigationPanel from '../appHeader/appHeader';
-import BurgerIngredients from '../burgerIngredients/burgerIngredients';
-import styles from './app.module.css'
-import BurgerConstructor from '../burgerConstructor/burgerConstructor';
-import { fetchIngredients } from '../../api/fetchIngredients';
+import React, { useEffect } from "react";
+import NavigationPanel from "../appHeader/appHeader";
+import BurgerIngredients from "../burgerIngredients/burgerIngredients";
+import styles from "./app.module.css";
+import BurgerConstructor from "../burgerConstructor/burgerConstructor";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchIngredientsReducer,
+  RESET_ORDER,
+} from "../../services/actions/bun";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
+  const error = useSelector((state) => state.order.error);
+  const dispatch = useDispatch();
 
-  const [ingredients, setIngredients] = useState([])
-  const [error, setError] = useState('')
+  useEffect(() => {
+    dispatch(fetchIngredientsReducer());
+  }, [dispatch]);
 
-  useEffect(()=>{
-    fetchIngredients({setIngredients,setError})
-  },[])
-
-  useEffect(
-    ()=>{
-      if(error){
-        alert(error)
-      }
+  useEffect(() => {
+    if (error) {
+      window.confirm("error");
+      dispatch({ type: RESET_ORDER });
     }
-    ,[error]
-  )
+  }, [error, dispatch]);
 
   return (
     <main className={styles.app}>
-      <NavigationPanel/>
+      <NavigationPanel />
       <section className={styles.content}>
-        <p className="text text_type_main-large mt-10 mb-5">
-          Соберите бургер
-        </p> 
+        <p className="text text_type_main-large mt-10 mb-5">Соберите бургер</p>
         <div className={styles.constructor_wrapper}>
-          <BurgerIngredients ingredients={ingredients}/>
-          <BurgerConstructor ingredients={ingredients}/>
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
         </div>
       </section>
-      <div id='modal'/>
+      <div id="modal" />
     </main>
   );
 }
