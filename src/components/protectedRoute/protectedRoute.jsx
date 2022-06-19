@@ -1,26 +1,22 @@
 import { Route, Redirect } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getCookie } from "../../utils/getCoockie";
+import { useSelector } from "react-redux";
 
 export function ProtectedRoute({ children, ...rest }) {
-  const [isUserLoaded, setUserLoaded] = useState(false);
+  const { cookie, isAuthenticated } = useSelector((state) => {
+    return {
+      isAuthenticated: state.auth.isAuthenticated,
+      cookie: state.auth.cookie,
+    };
+  });
 
-  const init = async () => {
-    const cookie = getCookie("accessToken");
-
-    if (cookie) {
-      setUserLoaded(true);
-    }
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
+  if (!cookie) {
+    return null;
+  }
 
   return (
     <Route
       {...rest}
-      render={() => (isUserLoaded ? children : <Redirect to="/login" />)}
+      render={() => (isAuthenticated ? children : <Redirect to="/login" />)}
     />
   );
 }

@@ -4,25 +4,18 @@ import {
   SET_PASSWORD_PROFILE,
   CLEAR_PROFILE,
   SET_PROFILE,
-  SET_COOCKIE,
 } from "../actions/auth";
 
 const initialState = {
   name: "",
   email: "",
   password: "",
-  coockie: "",
+  cookie: "",
   isHidePassword: true,
 };
 
 export const profileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_COOCKIE: {
-      return {
-        ...state,
-        coockie: action.payload,
-      };
-    }
     case SET_NAME_PROFILE: {
       return {
         ...state,

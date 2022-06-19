@@ -2,8 +2,8 @@ import { API_URL } from "../constants/constants";
 import { checkReponse } from "../utils/checkResponse";
 
 export const logout = async () => {
-  return await fetch(`${API_URL}/auth/user`, {
-    method: "GET",
+  return await fetch(`${API_URL}/auth/logout`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },

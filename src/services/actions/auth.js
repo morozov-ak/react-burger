@@ -4,13 +4,14 @@ import { login } from "../../api/login";
 import { logout } from "../../api/logout";
 import { passwordChange } from "../../api/passwordChange";
 import { passwordReset } from "../../api/passwordReset";
-import { refreshCoockie } from "../../api/refreshCoockie";
+import { refreshCookie } from "../../api/refreshCookie";
 import { registerUser } from "../../api/registerUser";
-import { setCookie } from "../../utils/setCoockie";
+import { setCookie } from "../../utils/setCookie";
 import { SET_ERROR } from "./bun";
 
-export const SET_COOCKIE = "SET_COOCKIE";
-export const CLEAR_COOCKIE = "CLEAR_COOCKIE";
+export const SET_COOKIE = "SET_COOKIE";
+export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
+export const CLEAR_COOKIE = "CLEAR_COOKIE";
 
 export const SET_EMAIL_LOGIN = "SET_EMAIL_LOGIN";
 export const SET_PASSWORD_LOGIN = "SET_PASSWORD_LOGIN";
@@ -74,28 +75,12 @@ export function loginReducer(form, cb) {
     try {
       const res = await login(form);
       if (res.success) {
+        const cookie = res.accessToken.split("Bearer ")[1];
         dispatch({ type: CLEAR_LOGIN });
-        setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
+        dispatch({ type: SET_COOKIE, payload: cookie });
+        setCookie("accessToken", cookie);
         localStorage.setItem("refreshToken", res.refreshToken);
         cb();
-      } else {
-        dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
-      }
-    } catch (e) {
-      dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
-    }
-  };
-}
-
-export function refreshCoockieReducer() {
-  return async (dispatch) => {
-    try {
-      const res = await refreshCoockie();
-      if (res.success) {
-        const coockie = res.accessToken.split("Bearer ")[1];
-        setCookie("accessToken", coockie);
-        localStorage.setItem("refreshToken", res.refreshToken);
-        dispatch({ type: SET_COOCKIE, payload: coockie });
       } else {
         dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
       }
@@ -122,12 +107,39 @@ export function registerUserReducer(form) {
   };
 }
 
+export function refreshCookieReducer() {
+  return async (dispatch) => {
+    console.log("refredh");
+    try {
+      const res = await refreshCookie();
+      if (res.success) {
+        const cookie = res.accessToken.split("Bearer ")[1];
+        setCookie("accessToken", cookie);
+        localStorage.setItem("refreshToken", res.refreshToken);
+        dispatch({ type: SET_COOKIE, payload: cookie });
+      } else {
+        dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
+      }
+    } catch (e) {
+      dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
+    }
+  };
+}
+
 export function getUserInfoReducer() {
   return async (dispatch) => {
     try {
       const res = await getUserInfo();
-      dispatch({ type: SET_PROFILE, payload: res.user });
+      if (res.success) {
+        dispatch({ type: SET_PROFILE, payload: res.user });
+      } else {
+        dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
+      }
     } catch (e) {
+      if (e.message === "jwt expired") {
+        console.log("jwt expired");
+        dispatch(refreshCookieReducer());
+      }
       dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
     }
   };

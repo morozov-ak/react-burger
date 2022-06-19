@@ -7,6 +7,7 @@ import { loginReducer } from "./login";
 import { registrationReducer } from "./registration";
 import { resetPasswordReducer } from "./resetPassword";
 import { profileReducer } from "./profile";
+import { authReducer } from "./auth";
 
 export const rootReducer = combineReducers({
   order: orderReducer,
@@ -17,4 +18,5 @@ export const rootReducer = combineReducers({
   registrationForm: registrationReducer,
   resetPasswordForm: resetPasswordReducer,
   profileForm: profileReducer,
+  auth: authReducer,
 });

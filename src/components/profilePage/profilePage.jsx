@@ -96,7 +96,8 @@ export function ProfilePage() {
           История заказов
         </NavLink>
         <NavLink
-          to="/exit"
+          exact
+          to="/"
           onClick={handleLogout}
           className={`text mt-8 text_color_inactive text_type_main-medium ${styles.link}`}
           activeClassName={styles.link_active}

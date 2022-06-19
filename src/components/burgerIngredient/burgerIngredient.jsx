@@ -22,7 +22,6 @@ const BurgerIngredient = memo(({ ingredient }) => {
       bunId: state.burgerConstructor.bunId,
     };
   });
-  console.log(showedIngredientId, fillingIds, bunId, ingredient._id);
 
   const dispatch = useDispatch();
 

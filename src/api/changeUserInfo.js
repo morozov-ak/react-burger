@@ -1,6 +1,6 @@
 import { API_URL } from "../constants/constants";
 import { checkReponse } from "../utils/checkResponse";
-import { getCookie } from "../utils/getCoockie";
+import { getCookie } from "../utils/getCookie";
 
 export const changeUserInfo = async (field) => {
   console.log(field);

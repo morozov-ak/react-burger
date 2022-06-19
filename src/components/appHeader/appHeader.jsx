@@ -13,13 +13,11 @@ function AppHeader() {
     <header className={styles.appHeader}>
       <div className={styles.container}>
         <div className={styles.left_menu}>
-          <a
-            className={`text text_type_main-default ${styles.header_link}`}
-            href="/"
-          >
+          <Link className={`${styles.header_link}`} to="/">
             <BurgerIcon type="primary" />
             <p className={`text text_type_main-default ml-2`}>Конструктор</p>
-          </a>
+          </Link>
+
           <a
             className={`text text_type_main-default ml-10 ${styles.header_link}`}
             href="ya.ru"

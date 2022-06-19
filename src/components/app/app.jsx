@@ -16,19 +16,46 @@ import { ResetPasswordPage } from "../resetPasswordPage/resetPasswordPage";
 import { ProfilePage } from "../profilePage/profilePage";
 import { IngredientInfoPage } from "../ingredientInfoPage/ingredientInfoPage";
 import { ProtectedRoute } from "../protectedRoute/protectedRoute";
-import { getCookie } from "../../utils/getCoockie";
-import { refreshCoockieReducer } from "../../services/actions";
+import { getCookie } from "../../utils/getCookie";
+import {
+  SET_ERROR,
+  SET_AUTHENTICATED,
+  SET_COOKIE,
+} from "../../services/actions";
+import { getUserInfo } from "../../api/getUserInfo";
+import { refreshCookie } from "../../api/refreshCookie";
 
 function App() {
   const error = useSelector((state) => state.order.error);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const coockie = getCookie("accessToken");
-  //   if (coockie) {
-  //     dispatch(refreshCoockieReducer());
-  //   }
-  // }, [dispatch]);
+  useEffect(() => {
+    console.log("app render");
+    getUserInfo()
+      .then((res) => {
+        if (res.success) {
+          dispatch({ type: SET_AUTHENTICATED, payload: true });
+        }
+      })
+      .catch((e) => {
+        if (!e.success) {
+          refreshCookie()
+            .then((res) => {
+              if (res.success) {
+                dispatch({ type: SET_AUTHENTICATED, payload: true });
+              }
+            })
+            .catch((e) => {
+              dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
+            });
+        }
+      });
+
+    const cookie = getCookie("accessToken");
+    if (cookie) {
+      dispatch({ type: SET_COOKIE, payload: cookie });
+    }
+  });
 
   useEffect(() => {
     dispatch(fetchIngredientsReducer());
@@ -48,15 +75,19 @@ function App() {
         <Route exact path="/">
           <ConstructorPage />
         </Route>
+
         <Route exact path="/login">
           <LoginPage />
         </Route>
+
         <Route exact path="/register">
           <RegistrationPage />
         </Route>
+
         <Route exact path="/forgot-password">
           <ForgotPasswordPage />
         </Route>
+
         <Route exact path="/reset-password">
           <ResetPasswordPage />
         </Route>
@@ -68,8 +99,10 @@ function App() {
         <Route exact path="/ingredient/:id">
           <IngredientInfoPage />
         </Route>
+
         <ErrorPage />
       </Switch>
+
       <div id="modal" />
     </main>
   );
