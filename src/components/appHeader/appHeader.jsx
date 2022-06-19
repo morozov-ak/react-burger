@@ -5,6 +5,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
+import { Link } from "react-router-dom";
 import styles from "./appHeader.module.css";
 
 function AppHeader() {
@@ -14,7 +15,7 @@ function AppHeader() {
         <div className={styles.left_menu}>
           <a
             className={`text text_type_main-default ${styles.header_link}`}
-            href="ya.ru"
+            href="/"
           >
             <BurgerIcon type="primary" />
             <p className={`text text_type_main-default ml-2`}>Конструктор</p>
@@ -31,13 +32,13 @@ function AppHeader() {
           <Logo />
         </div>
         <div>
-          <a
+          <Link
             className={`text text_type_main-default ${styles.header_link}`}
-            href="ya.ru"
+            to="/profile"
           >
             <ProfileIcon type="primary" />
             <p className={`text text_type_main-default ml-2`}>Личный кабинет</p>
-          </a>
+          </Link>
         </div>
       </div>
     </header>

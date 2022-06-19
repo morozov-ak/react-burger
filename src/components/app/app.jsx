@@ -1,19 +1,34 @@
 import React, { useEffect } from "react";
 import NavigationPanel from "../appHeader/appHeader";
-import BurgerIngredients from "../burgerIngredients/burgerIngredients";
 import styles from "./app.module.css";
-import BurgerConstructor from "../burgerConstructor/burgerConstructor";
 import { useSelector, useDispatch } from "react-redux";
+import { Switch, Route } from "react-router-dom";
 import {
   fetchIngredientsReducer,
   RESET_ORDER,
 } from "../../services/actions/bun";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { ConstructorPage } from "../constructorPage/constructorPage";
+import { ErrorPage } from "../errorPage/errorPage";
+import { LoginPage } from "../loginPage/loginPage";
+import { RegistrationPage } from "../registrationPage/registrationPage";
+import { ForgotPasswordPage } from "../forgotPasswordPage/forgotPasswordPage";
+import { ResetPasswordPage } from "../resetPasswordPage/resetPasswordPage";
+import { ProfilePage } from "../profilePage/profilePage";
+import { IngredientInfoPage } from "../ingredientInfoPage/ingredientInfoPage";
+import { ProtectedRoute } from "../protectedRoute/protectedRoute";
+import { getCookie } from "../../utils/getCoockie";
+import { refreshCoockieReducer } from "../../services/actions";
 
 function App() {
   const error = useSelector((state) => state.order.error);
   const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   const coockie = getCookie("accessToken");
+  //   if (coockie) {
+  //     dispatch(refreshCoockieReducer());
+  //   }
+  // }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchIngredientsReducer());
@@ -29,15 +44,32 @@ function App() {
   return (
     <main className={styles.app}>
       <NavigationPanel />
-      <section className={styles.content}>
-        <p className="text text_type_main-large mt-10 mb-5">Соберите бургер</p>
-        <div className={styles.constructor_wrapper}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </div>
-      </section>
+      <Switch>
+        <Route exact path="/">
+          <ConstructorPage />
+        </Route>
+        <Route exact path="/login">
+          <LoginPage />
+        </Route>
+        <Route exact path="/register">
+          <RegistrationPage />
+        </Route>
+        <Route exact path="/forgot-password">
+          <ForgotPasswordPage />
+        </Route>
+        <Route exact path="/reset-password">
+          <ResetPasswordPage />
+        </Route>
+
+        <ProtectedRoute exact path="/profile">
+          <ProfilePage />
+        </ProtectedRoute>
+
+        <Route exact path="/ingredient/:id">
+          <IngredientInfoPage />
+        </Route>
+        <ErrorPage />
+      </Switch>
       <div id="modal" />
     </main>
   );

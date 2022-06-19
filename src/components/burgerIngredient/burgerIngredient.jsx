@@ -17,11 +17,12 @@ import { useDrag } from "react-dnd";
 const BurgerIngredient = memo(({ ingredient }) => {
   const { showedIngredientId, fillingIds, bunId } = useSelector((state) => {
     return {
-      showedIngredientId: state.order.showedIngredientId,
+      showedIngredientId: state.ingredientDetails.showedIngredientId,
       fillingIds: state.burgerConstructor.fillingIds,
       bunId: state.burgerConstructor.bunId,
     };
   });
+  console.log(showedIngredientId, fillingIds, bunId, ingredient._id);
 
   const dispatch = useDispatch();
 

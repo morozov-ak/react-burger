@@ -34,3 +34,10 @@
     display: flex;
     align-items: center;
 }
+
+@media screen and (max-width: 1240px) {
+    .container{
+        left:0px;
+        transform: none; 
+    }
+}
