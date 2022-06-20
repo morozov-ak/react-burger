@@ -5,19 +5,33 @@ import PropTypes from "prop-types";
 import { ModalOverlay } from "../modalOverlay/modalOverlay";
 import { createPortal } from "react-dom";
 import { ESC_KEYCODE } from "../../constants/constants";
+import { useHistory } from "react-router-dom";
 
 export const Modal = memo(({ onClose, headerText, children }) => {
+  let history = useHistory();
+
+  const back = useCallback(
+    (e) => {
+      history.goBack();
+    },
+    [history]
+  );
+
   const handleClickButton = () => {
-    setTimeout(onClose, 0); // magic
+    back();
   };
 
   const escFunction = useCallback(
     (event) => {
       if (event.keyCode === ESC_KEYCODE) {
-        onClose();
+        if (onClose) {
+          onClose();
+        } else {
+          back();
+        }
       }
     },
-    [onClose]
+    [onClose, back]
   );
 
   useEffect(() => {
@@ -27,23 +41,30 @@ export const Modal = memo(({ onClose, headerText, children }) => {
     };
   }, [escFunction]);
 
-  return createPortal(
+  const ModalComponent = (
     <>
-      <ModalOverlay onClose={onClose} />
+      <ModalOverlay onClose={onClose || back} />
       <section className={`${styles.modal}`}>
         <header className={`ml-10 mt-10 mr-10 ${styles.header}`}>
           {headerText && (
             <p className="text text_type_main-large">{headerText}</p>
           )}
-          <button onClick={handleClickButton} className={`${styles.button}`}>
+          <button
+            onClick={handleClickButton || back}
+            className={`${styles.button}`}
+          >
             <CloseIcon />
           </button>
         </header>
         {children}
       </section>
-    </>,
-    document.getElementById("modal")
+    </>
   );
+
+  const modalHtmlElement = document.getElementById("modal");
+  if (modalHtmlElement) {
+    return createPortal(ModalComponent, modalHtmlElement);
+  }
 });
 
 Modal.propTypes = {

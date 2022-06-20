@@ -1,12 +1,20 @@
 import React, { memo } from "react";
 import styles from "./ingredientDetails.module.css";
-import { ingredient } from "../../types";
 import { IngredientNutritions } from "../ingredientNutritions/ingredientNutritions";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export const IngredientDetails = memo(({ ingredient }) => {
+export const IngredientDetails = memo(() => {
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+
+  let { id } = useParams();
+
+  const ingredient = ingredients.filter(
+    (ingredient) => id === ingredient._id
+  )[0];
+  console.log("ingredient", ingredient);
   const { image_large, name, calories, fat, proteins, carbohydrates } =
     ingredient;
-
   return (
     <section className={`pb-15 ${styles.card}`}>
       <img src={image_large} alt={name} />
@@ -20,7 +28,3 @@ export const IngredientDetails = memo(({ ingredient }) => {
     </section>
   );
 });
-
-IngredientDetails.propTypes = {
-  ingredient: ingredient,
-};

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import NavigationPanel from "../appHeader/appHeader";
 import styles from "./app.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 import {
   fetchIngredientsReducer,
   RESET_ORDER,
@@ -18,19 +18,32 @@ import { IngredientInfoPage } from "../ingredientInfoPage/ingredientInfoPage";
 import { ProtectedRoute } from "../protectedRoute/protectedRoute";
 import { getCookie } from "../../utils/getCookie";
 import {
-  SET_ERROR,
   SET_AUTHENTICATED,
   SET_COOKIE,
+  SET_ISLOADED,
 } from "../../services/actions";
 import { getUserInfo } from "../../api/getUserInfo";
 import { refreshCookie } from "../../api/refreshCookie";
+import { Modal } from "../modal/modal";
+import { IngredientDetails } from "../ingredientDetails/ingredientDetails";
+import { deleteCookie } from "../../utils/deleteCookie";
+import { LoginedRoute } from "../loginedRoute/loginedRoute";
+import { OrdersPage } from "../ordersPage/ordersPage";
 
 function App() {
   const error = useSelector((state) => state.order.error);
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => {
+    return {
+      isAuthenticated: state.auth.isAuthenticated,
+    };
+  });
 
   useEffect(() => {
-    console.log("app render");
+    const cookie = getCookie("accessToken");
+    if (cookie) {
+      dispatch({ type: SET_COOKIE, payload: cookie });
+    }
     getUserInfo()
       .then((res) => {
         if (res.success) {
@@ -46,16 +59,13 @@ function App() {
               }
             })
             .catch((e) => {
-              dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
+              deleteCookie("accessToken");
+              localStorage.clear("refreshToken");
             });
         }
-      });
-
-    const cookie = getCookie("accessToken");
-    if (cookie) {
-      dispatch({ type: SET_COOKIE, payload: cookie });
-    }
-  });
+      })
+      .finally(dispatch({ type: SET_ISLOADED }));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchIngredientsReducer());
@@ -67,6 +77,9 @@ function App() {
       dispatch({ type: RESET_ORDER });
     }
   }, [error, dispatch]);
+  let location = useLocation();
+  let background = location.state && location.state.background;
+  console.log(background);
 
   return (
     <main className={styles.app}>
@@ -76,13 +89,13 @@ function App() {
           <ConstructorPage />
         </Route>
 
-        <Route exact path="/login">
+        <LoginedRoute exact path="/login">
           <LoginPage />
-        </Route>
+        </LoginedRoute>
 
-        <Route exact path="/register">
+        <LoginedRoute exact path="/register">
           <RegistrationPage />
-        </Route>
+        </LoginedRoute>
 
         <Route exact path="/forgot-password">
           <ForgotPasswordPage />
@@ -96,13 +109,26 @@ function App() {
           <ProfilePage />
         </ProtectedRoute>
 
-        <Route exact path="/ingredient/:id">
+        <ProtectedRoute exact path="/profile/orders">
+          <OrdersPage />
+        </ProtectedRoute>
+
+        <Route path="/ingredient/:id">
           <IngredientInfoPage />
         </Route>
 
         <ErrorPage />
       </Switch>
-
+      {background && (
+        <Route
+          path="/ingredient/:id"
+          children={
+            <Modal>
+              <IngredientDetails />
+            </Modal>
+          }
+        />
+      )}
       <div id="modal" />
     </main>
   );

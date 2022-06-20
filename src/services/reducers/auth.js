@@ -1,11 +1,9 @@
-import { SET_COOKIE, SET_AUTHENTICATED } from "../actions/auth";
+import { SET_COOKIE, SET_AUTHENTICATED, SET_ISLOADED } from "../actions/auth";
 
 const initialState = {
-  name: "",
-  email: "",
-  password: "",
   cookie: "",
-  isHidePassword: true,
+  isLoaded: false,
+  isAuthenticated: false,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -14,6 +12,13 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: action.payload,
+      };
+    }
+
+    case SET_ISLOADED: {
+      return {
+        ...state,
+        isLoaded: true,
       };
     }
 

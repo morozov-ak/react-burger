@@ -4,37 +4,19 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { memo, useCallback, useMemo } from "react";
-import { Modal } from "../modal/modal";
-import { IngredientDetails } from "../ingredientDetails/ingredientDetails";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  CLOSE_NUTRITIONS_MODAL,
-  OPEN_NUTRITIONS_MODAL,
-} from "../../services/actions/bun";
+import { memo, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 
 const BurgerIngredient = memo(({ ingredient }) => {
-  const { showedIngredientId, fillingIds, bunId } = useSelector((state) => {
+  const { fillingIds, bunId } = useSelector((state) => {
     return {
       showedIngredientId: state.ingredientDetails.showedIngredientId,
       fillingIds: state.burgerConstructor.fillingIds,
       bunId: state.burgerConstructor.bunId,
     };
   });
-
-  const dispatch = useDispatch();
-
-  const handleOpenModal = useCallback(() => {
-    dispatch({
-      type: OPEN_NUTRITIONS_MODAL,
-      showedIngredientId: ingredient._id,
-    });
-  }, [dispatch, ingredient]);
-
-  const handleCloseModal = useCallback(() => {
-    dispatch({ type: CLOSE_NUTRITIONS_MODAL, showedIngredientId: "" });
-  }, [dispatch]);
 
   const [, dragRef, dragPreviewRef] = useDrag({
     type: ingredient.type,
@@ -47,11 +29,17 @@ const BurgerIngredient = memo(({ ingredient }) => {
       : fillingIds.filter((item) => item === ingredient._id).length;
   }, [bunId, fillingIds, ingredient]);
 
+  let location = useLocation();
+
   return (
-    <button
+    <Link
       ref={dragRef}
       className={`mb-4 ${styles.ingredient}`}
-      onClick={handleOpenModal}
+      key={ingredient._id}
+      to={{
+        pathname: `/ingredient/${ingredient._id}`,
+        state: { background: location },
+      }}
     >
       {Boolean(count) && <Counter count={count} size="default" />}
       <img ref={dragPreviewRef} src={ingredient.image} alt={ingredient.name} />
@@ -63,13 +51,7 @@ const BurgerIngredient = memo(({ ingredient }) => {
       <p className={`text text_type_main-default ${styles.ingredient_name}`}>
         {ingredient.name}
       </p>
-
-      {showedIngredientId === ingredient._id && (
-        <Modal onClose={handleCloseModal} headerText="Детали ингредиента">
-          <IngredientDetails ingredient={ingredient} />
-        </Modal>
-      )}
-    </button>
+    </Link>
   );
 });
 

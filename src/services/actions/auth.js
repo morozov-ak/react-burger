@@ -10,6 +10,7 @@ import { setCookie } from "../../utils/setCookie";
 import { SET_ERROR } from "./bun";
 
 export const SET_COOKIE = "SET_COOKIE";
+export const SET_ISLOADED = "SET_ISLOADED";
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const CLEAR_COOKIE = "CLEAR_COOKIE";
 

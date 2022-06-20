@@ -1,7 +1,7 @@
 import { Route, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export function ProtectedRoute({ children, ...rest }) {
+export function LoginedRoute({ children, ...rest }) {
   const { isLoaded, isAuthenticated } = useSelector((state) => {
     return {
       isAuthenticated: state.auth.isAuthenticated,
@@ -17,7 +17,7 @@ export function ProtectedRoute({ children, ...rest }) {
   return (
     <Route
       {...rest}
-      render={() => (isAuthenticated ? children : <Redirect to="/login" />)}
+      render={() => (!isAuthenticated ? children : <Redirect to="/" />)}
     />
   );
 }

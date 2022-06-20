@@ -78,81 +78,84 @@ export function ProfilePage() {
     dispatch(logoutReducer());
   }, [dispatch]);
 
-  return (
-    <div className={styles.content}>
-      <section className={`${styles.menu}`}>
-        <NavLink
-          to="/profile"
-          className={`text text_color_inactive text_type_main-medium ${styles.link}`}
-          activeClassName={styles.link_active}
-        >
-          Профиль
-        </NavLink>
-        <NavLink
-          to="/history"
-          className={`text mt-8 text_color_inactive text_type_main-medium ${styles.link}`}
-          activeClassName={styles.link_active}
-        >
-          История заказов
-        </NavLink>
-        <NavLink
-          exact
-          to="/"
-          onClick={handleLogout}
-          className={`text mt-8 text_color_inactive text_type_main-medium ${styles.link}`}
-          activeClassName={styles.link_active}
-        >
-          Выход
-        </NavLink>
-        <p
-          className={`text text_color_inactive mt-20 text_type_main-default ${styles.helper}`}
-        >
-          В этом разделе вы можете изменить свои персональные данные
-        </p>
-      </section>
-      <section className={styles.inputs}>
-        <Input
-          type={"text"}
-          placeholder="Имя"
-          onChange={handleNameChange}
-          icon={"EditIcon"}
-          value={name}
-          name={"name"}
-          error={false}
-          onIconClick={handleChangeField}
-          errorText={"Ошибка"}
-          size={"default"}
-        />
-        <div className="mt-6">
+  if (name && email) {
+    return (
+      <div className={styles.content}>
+        <section className={`${styles.menu}`}>
+          <NavLink
+            to="/profile"
+            className={`text text_color_inactive text_type_main-medium ${styles.link}`}
+            activeClassName={styles.link_active}
+          >
+            Профиль
+          </NavLink>
+          <NavLink
+            to="/history"
+            className={`text mt-8 text_color_inactive text_type_main-medium ${styles.link}`}
+            activeClassName={styles.link_active}
+          >
+            История заказов
+          </NavLink>
+          <NavLink
+            exact
+            to="/"
+            onClick={handleLogout}
+            className={`text mt-8 text_color_inactive text_type_main-medium ${styles.link}`}
+            activeClassName={styles.link_active}
+          >
+            Выход
+          </NavLink>
+          <p
+            className={`text text_color_inactive mt-20 text_type_main-default ${styles.helper}`}
+          >
+            В этом разделе вы можете изменить свои персональные данные
+          </p>
+        </section>
+        <section className={styles.inputs}>
           <Input
             type={"text"}
-            placeholder="Логин"
-            onChange={handleEmailChange}
+            placeholder="Имя"
+            onChange={handleNameChange}
             icon={"EditIcon"}
-            value={email}
-            name={"email"}
+            value={name}
+            name={"name"}
             error={false}
             onIconClick={handleChangeField}
             errorText={"Ошибка"}
             size={"default"}
           />
-        </div>
+          <div className="mt-6">
+            <Input
+              type={"text"}
+              placeholder="Логин"
+              onChange={handleEmailChange}
+              icon={"EditIcon"}
+              value={email}
+              name={"email"}
+              error={false}
+              onIconClick={handleChangeField}
+              errorText={"Ошибка"}
+              size={"default"}
+            />
+          </div>
 
-        <div className="mt-6">
-          <Input
-            type={"password"}
-            placeholder="Пароль"
-            onChange={handlePasswordChange}
-            icon={"EditIcon"}
-            value={password}
-            name="password"
-            error={false}
-            onIconClick={handleChangeField}
-            errorText={"Ошибка"}
-            size={"default"}
-          />
-        </div>
-      </section>
-    </div>
-  );
+          <div className="mt-6">
+            <Input
+              type={"password"}
+              placeholder="Пароль"
+              onChange={handlePasswordChange}
+              icon={"EditIcon"}
+              value={password}
+              name="password"
+              error={false}
+              onIconClick={handleChangeField}
+              errorText={"Ошибка"}
+              size={"default"}
+            />
+          </div>
+        </section>
+      </div>
+    );
+  }
+  return null;
 }
