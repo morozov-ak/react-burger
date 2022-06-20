@@ -9,12 +9,9 @@ export const IngredientDetails = memo(() => {
 
   let { id } = useParams();
 
-  const ingredient = ingredients.filter(
-    (ingredient) => id === ingredient._id
-  )[0];
-  console.log("ingredient", ingredient);
   const { image_large, name, calories, fat, proteins, carbohydrates } =
-    ingredient;
+    ingredients.filter((ingredient) => id === ingredient._id)[0];
+
   return (
     <section className={`pb-15 ${styles.card}`}>
       <img src={image_large} alt={name} />

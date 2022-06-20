@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import NavigationPanel from "../appHeader/appHeader";
 import styles from "./app.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 import {
   fetchIngredientsReducer,
   RESET_ORDER,
@@ -74,7 +74,6 @@ function App() {
   }, [error, dispatch]);
   let location = useLocation();
   let background = location.state && location.state.background;
-  console.log(background);
 
   return (
     <main className={styles.app}>
