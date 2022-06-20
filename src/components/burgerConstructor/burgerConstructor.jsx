@@ -78,7 +78,7 @@ const BurgerConstructor = memo(() => {
     } else {
       history.push("login");
     }
-  }, [dispatch, fillingIds, bunId, history]);
+  }, [dispatch, fillingIds, bunId, history, isAuthenticated]);
 
   const handleCloseModal = useCallback(() => {
     dispatch({ type: CLOSE_ORDER_MODAL });
@@ -161,11 +161,6 @@ const BurgerConstructor = memo(() => {
           )}
         </Modal>
       )}
-      {/* {isOpenedOrederModal && orderId && (
-        <Modal onClose={handleCloseModal}>
-          <OrderDetails orderNumber={orderId} />
-        </Modal>
-      )} */}
     </section>
   );
 });

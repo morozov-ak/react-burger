@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import NavigationPanel from "../appHeader/appHeader";
 import styles from "./app.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Switch, Route, useLocation, Redirect } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import {
   fetchIngredientsReducer,
   RESET_ORDER,
@@ -33,11 +33,6 @@ import { OrdersPage } from "../ordersPage/ordersPage";
 function App() {
   const error = useSelector((state) => state.order.error);
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => {
-    return {
-      isAuthenticated: state.auth.isAuthenticated,
-    };
-  });
 
   useEffect(() => {
     const cookie = getCookie("accessToken");
