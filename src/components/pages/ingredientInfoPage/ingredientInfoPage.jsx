@@ -4,7 +4,7 @@ import styles from "./ingredientInfoPage.module.css";
 import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
-import { IngredientDetails } from "../ingredientDetails/ingredientDetails";
+import { IngredientDetails } from "../../ingredientDetails/ingredientDetails";
 
 export function IngredientInfoPage() {
   let { id } = useParams();

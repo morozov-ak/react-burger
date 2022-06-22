@@ -11,8 +11,8 @@ import {
   SET_CODE_RESET,
   SET_PASSWORD_RESET,
   TOGGLE_PASSWORD_RESET,
-} from "../../services/actions";
-import { Link } from "react-router-dom";
+} from "../../../services/actions";
+import { Link, useHistory } from "react-router-dom";
 
 export function ResetPasswordPage() {
   const { password, code, isHidePassword } = useSelector((state) => {
@@ -24,6 +24,7 @@ export function ResetPasswordPage() {
   });
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     return () => {
@@ -50,12 +51,18 @@ export function ResetPasswordPage() {
   }, [dispatch]);
 
   const handleChangePassword = useCallback(() => {
-    dispatch(changePasswordReducer({ password, token: code }));
-  }, [dispatch, password, code]);
+    dispatch(
+      changePasswordReducer({ password, token: code }, () => {
+        history.push("/login");
+      })
+    );
+  }, [dispatch, password, code, history]);
 
   return (
     <section className={styles.content}>
-      <p className="text text_type_main-medium mt-10 mb-5">Вход</p>
+      <p className="text text_type_main-medium mt-10 mb-5">
+        Восстановление пароля
+      </p>
       <Input
         type={isHidePassword ? "password" : "text"}
         placeholder="Введите новый пароль"

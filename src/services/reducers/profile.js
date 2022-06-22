@@ -4,13 +4,16 @@ import {
   SET_PASSWORD_PROFILE,
   CLEAR_PROFILE,
   SET_PROFILE,
+  RESET_PROFILE,
 } from "../actions/auth";
 
 const initialState = {
+  isChanged: false,
+  nameOld: "",
+  emailOld: "",
   name: "",
   email: "",
   password: "",
-  cookie: "",
   isHidePassword: true,
 };
 
@@ -20,19 +23,25 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         name: action.payload,
+        isChanged: true,
       };
     }
+
     case SET_PROFILE: {
       return {
         ...state,
         name: action.payload.name,
         email: action.payload.email,
+        nameOld: action.payload.name,
+        emailOld: action.payload.email,
       };
     }
+
     case SET_EMAIL_PROFILE: {
       return {
         ...state,
         email: action.payload,
+        isChanged: true,
       };
     }
 
@@ -40,6 +49,17 @@ export const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         password: action.payload,
+        isChanged: true,
+      };
+    }
+
+    case RESET_PROFILE: {
+      return {
+        ...state,
+        name: state.nameOld,
+        email: state.emailOld,
+        password: "",
+        isChanged: false,
       };
     }
 

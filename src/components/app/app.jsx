@@ -7,20 +7,21 @@ import {
   fetchIngredientsReducer,
   RESET_ORDER,
 } from "../../services/actions/bun";
-import { ConstructorPage } from "../constructorPage/constructorPage";
-import { ErrorPage } from "../errorPage/errorPage";
-import { LoginPage } from "../loginPage/loginPage";
-import { RegistrationPage } from "../registrationPage/registrationPage";
-import { ForgotPasswordPage } from "../forgotPasswordPage/forgotPasswordPage";
-import { ResetPasswordPage } from "../resetPasswordPage/resetPasswordPage";
-import { ProfilePage } from "../profilePage/profilePage";
-import { IngredientInfoPage } from "../ingredientInfoPage/ingredientInfoPage";
+import { ConstructorPage } from "../pages/constructorPage/constructorPage";
+import { ErrorPage } from "../pages/errorPage/errorPage";
+import { LoginPage } from "../pages/loginPage/loginPage";
+import { RegistrationPage } from "../pages/registrationPage/registrationPage";
+import { ForgotPasswordPage } from "../pages/forgotPasswordPage/forgotPasswordPage";
+import { ResetPasswordPage } from "../pages/resetPasswordPage/resetPasswordPage";
+import { ProfilePage } from "../pages/profilePage/profilePage";
+import { IngredientInfoPage } from "../pages/ingredientInfoPage/ingredientInfoPage";
 import { ProtectedRoute } from "../protectedRoute/protectedRoute";
 import { getCookie } from "../../utils/getCookie";
 import {
   SET_AUTHENTICATED,
   SET_COOKIE,
   SET_ISLOADED,
+  SET_ERROR,
 } from "../../services/actions";
 import { getUserInfo } from "../../api/getUserInfo";
 import { refreshCookie } from "../../api/refreshCookie";
@@ -28,38 +29,56 @@ import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredientDetails/ingredientDetails";
 import { deleteCookie } from "../../utils/deleteCookie";
 import { LoginedRoute } from "../loginedRoute/loginedRoute";
-import { OrdersPage } from "../ordersPage/ordersPage";
+import { OrdersPage } from "../pages/ordersPage/ordersPage";
+import { setCookie } from "../../utils/setCookie";
 
 function App() {
-  const error = useSelector((state) => state.order.error);
+  const { error, isReseted, isLoaded } = useSelector((state) => {
+    return {
+      error: state.order.error,
+      isReseted: state.resetPasswordForm.isReseted,
+      isLoaded: state.auth.isLoaded,
+    };
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const cookie = getCookie("accessToken");
-    if (cookie) {
-      dispatch({ type: SET_COOKIE, payload: cookie });
+    const token = localStorage.getItem("refreshToken");
+    if (token) {
+      getUserInfo()
+        .then((res) => {
+          if (res.success) {
+            dispatch({ type: SET_AUTHENTICATED, payload: true });
+            dispatch({ type: SET_ISLOADED });
+          }
+        })
+        .catch((e) => {
+          if (!e.success) {
+            refreshCookie()
+              .then((res) => {
+                if (res.success) {
+                  const cookie = res.accessToken.split("Bearer ")[1];
+                  setCookie("accessToken", cookie);
+                  localStorage.setItem("refreshToken", res.refreshToken);
+                  dispatch({ type: SET_COOKIE, payload: cookie });
+                  dispatch({ type: SET_AUTHENTICATED, payload: true });
+                  dispatch({ type: SET_ISLOADED });
+                } else {
+                  dispatch({
+                    type: SET_ERROR,
+                    error: "Ошибка выполнения запроса",
+                  });
+                  dispatch({ type: SET_ISLOADED });
+                }
+              })
+              .catch((e) => {
+                deleteCookie("accessToken");
+                localStorage.clear("refreshToken");
+                dispatch({ type: SET_ISLOADED });
+              });
+          }
+        });
     }
-    getUserInfo()
-      .then((res) => {
-        if (res.success) {
-          dispatch({ type: SET_AUTHENTICATED, payload: true });
-        }
-      })
-      .catch((e) => {
-        if (!e.success) {
-          refreshCookie()
-            .then((res) => {
-              if (res.success) {
-                dispatch({ type: SET_AUTHENTICATED, payload: true });
-              }
-            })
-            .catch((e) => {
-              deleteCookie("accessToken");
-              localStorage.clear("refreshToken");
-            });
-        }
-      })
-      .finally(dispatch({ type: SET_ISLOADED }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -72,31 +91,32 @@ function App() {
       dispatch({ type: RESET_ORDER });
     }
   }, [error, dispatch]);
+
   let location = useLocation();
   let background = location.state && location.state.background;
 
   return (
     <main className={styles.app}>
       <NavigationPanel />
-      <Switch>
+      <Switch location={background || location}>
         <Route exact path="/">
           <ConstructorPage />
         </Route>
 
-        <LoginedRoute exact path="/login">
+        <Route exact path="/login">
           <LoginPage />
-        </LoginedRoute>
+        </Route>
 
         <LoginedRoute exact path="/register">
           <RegistrationPage />
         </LoginedRoute>
 
-        <Route exact path="/forgot-password">
+        <LoginedRoute exact path="/forgot-password">
           <ForgotPasswordPage />
-        </Route>
+        </LoginedRoute>
 
         <Route exact path="/reset-password">
-          <ResetPasswordPage />
+          {isReseted ? <ResetPasswordPage /> : <Redirect to="/login" />}
         </Route>
 
         <ProtectedRoute exact path="/profile">

@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect } from "react";
 import styles from "./profilePage.module.css";
-import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Button,
+  Input,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SET_NAME_PROFILE,
@@ -10,26 +13,34 @@ import {
   CLEAR_PROFILE,
   changeUserInfoReducer,
   logoutReducer,
-} from "../../services/actions";
+  RESET_PROFILE,
+} from "../../../services/actions";
 import { NavLink } from "react-router-dom";
 
 export function ProfilePage() {
-  const { name, email, password } = useSelector((state) => {
-    return {
-      name: state.profileForm.name,
-      email: state.profileForm.email,
-      password: state.profileForm.password,
-    };
-  });
+  const { name, email, password, isChanged, isLoaded } = useSelector(
+    (state) => {
+      return {
+        isLoaded: state.auth.isLoaded,
+        isChanged: state.profileForm.isChanged,
+        name: state.profileForm.name,
+        email: state.profileForm.email,
+        password: state.profileForm.password,
+      };
+    }
+  );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserInfoReducer());
+    if (isLoaded) {
+      dispatch(getUserInfoReducer());
+    }
+
     return () => {
       dispatch({ type: CLEAR_PROFILE });
     };
-  }, [dispatch]);
+  }, [dispatch, isLoaded]);
 
   const handleNameChange = useCallback(
     (event) => {
@@ -60,6 +71,12 @@ export function ProfilePage() {
     },
     [dispatch]
   );
+
+  const handleResetProfile = useCallback(() => {
+    dispatch({
+      type: RESET_PROFILE,
+    });
+  }, [dispatch]);
 
   const handleChangeField = useCallback(
     (event) => {
@@ -120,7 +137,6 @@ export function ProfilePage() {
             value={name}
             name={"name"}
             error={false}
-            onIconClick={handleChangeField}
             errorText={"Ошибка"}
             size={"default"}
           />
@@ -133,7 +149,6 @@ export function ProfilePage() {
               value={email}
               name={"email"}
               error={false}
-              onIconClick={handleChangeField}
               errorText={"Ошибка"}
               size={"default"}
             />
@@ -148,11 +163,32 @@ export function ProfilePage() {
               value={password}
               name="password"
               error={false}
-              onIconClick={handleChangeField}
               errorText={"Ошибка"}
               size={"default"}
             />
           </div>
+          {isChanged && (
+            <>
+              <div className="mt-6">
+                <Button
+                  type="primary"
+                  size="medium"
+                  onClick={handleResetProfile}
+                >
+                  <p className={styles.button_text}>Отмена</p>
+                </Button>
+              </div>
+              <div className="mt-6">
+                <Button
+                  type="primary"
+                  size="medium"
+                  onClick={handleChangeField}
+                >
+                  <p className={styles.button_text}>Сохранить</p>
+                </Button>
+              </div>
+            </>
+          )}
         </section>
       </div>
     );

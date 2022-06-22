@@ -6,6 +6,7 @@ import { passwordChange } from "../../api/passwordChange";
 import { passwordReset } from "../../api/passwordReset";
 import { refreshCookie } from "../../api/refreshCookie";
 import { registerUser } from "../../api/registerUser";
+import { deleteCookie } from "../../utils/deleteCookie";
 import { setCookie } from "../../utils/setCookie";
 import { SET_ERROR } from "./bun";
 
@@ -30,9 +31,11 @@ export const SET_NAME_PROFILE = "SET_NAME_PROFILE";
 export const SET_EMAIL_PROFILE = "SET_EMAIL_PROFILE";
 export const SET_PASSWORD_PROFILE = "SET_PASSWORD_PROFILE";
 export const TOGGLE_PASSWORD_PROFILE = "TOGGLE_PASSWORD_PROFILE";
+export const RESET_PROFILE = "RESET_PROFILE";
 export const CLEAR_PROFILE = "CLEAR_PROFILE";
 
 export const SET_CODE_RESET = "SET_CODE_RESET";
+export const SET_IS_RESETED = "SET_IS_RESETED";
 export const SET_PASSWORD_RESET = "SET_PASSWORD_RESET";
 export const CLEAR_RESET = "CLEAR_RESET";
 export const TOGGLE_PASSWORD_RESET = "TOGGLE_PASSWORD_RESET";
@@ -45,6 +48,22 @@ export function resetPasswordReducer(email, cb) {
     try {
       const res = await passwordReset(email);
       if (res.success) {
+        dispatch({ type: SET_IS_RESETED });
+        cb();
+      } else {
+        dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
+      }
+    } catch (e) {
+      dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
+    }
+  };
+}
+
+export function changePasswordReducer(form, cb) {
+  return async (dispatch) => {
+    try {
+      const res = await passwordChange(form);
+      if (res.success) {
         dispatch({ type: CLEAR_FORGOT });
         cb();
       } else {
@@ -56,22 +75,7 @@ export function resetPasswordReducer(email, cb) {
   };
 }
 
-export function changePasswordReducer(email) {
-  return async (dispatch) => {
-    try {
-      const res = await passwordChange(email);
-      if (res.success) {
-        dispatch({ type: CLEAR_FORGOT });
-      } else {
-        dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
-      }
-    } catch (e) {
-      dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
-    }
-  };
-}
-
-export function loginReducer(form, cb) {
+export function loginReducer(form) {
   return async (dispatch) => {
     try {
       const res = await login(form);
@@ -81,7 +85,6 @@ export function loginReducer(form, cb) {
         dispatch({ type: SET_COOKIE, payload: cookie });
         setCookie("accessToken", cookie);
         localStorage.setItem("refreshToken", res.refreshToken);
-        cb();
       } else {
         dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
       }
@@ -110,7 +113,6 @@ export function registerUserReducer(form) {
 
 export function refreshCookieReducer() {
   return async (dispatch) => {
-    console.log("refredh");
     try {
       const res = await refreshCookie();
       if (res.success) {
@@ -122,6 +124,10 @@ export function refreshCookieReducer() {
         dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
       }
     } catch (e) {
+      if (e.message === "Token is invalid") {
+        deleteCookie("accessToken");
+        localStorage.clear("refreshToken");
+      }
       dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
     }
   };
@@ -137,10 +143,9 @@ export function getUserInfoReducer() {
         dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
       }
     } catch (e) {
-      if (e.message === "jwt expired") {
-        console.log("jwt expired");
-        dispatch(refreshCookieReducer());
-      }
+      // if (e.message === "jwt expired") {
+      //   dispatch(refreshCookieReducer());
+      // }
       dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
     }
   };
@@ -162,7 +167,9 @@ export function logoutReducer(field) {
     try {
       await logout();
       dispatch({ type: CLEAR_PROFILE });
-      setCookie("accessToken", "");
+      dispatch({ type: CLEAR_FORGOT });
+      dispatch({ type: SET_COOKIE, payload: false });
+      deleteCookie("accessToken");
       localStorage.clear("refreshToken");
     } catch (e) {
       dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });

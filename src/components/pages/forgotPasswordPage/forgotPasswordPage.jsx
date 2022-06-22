@@ -5,7 +5,7 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useHistory } from "react-router-dom";
-import { CLEAR_FORGOT, resetPasswordReducer } from "../../services/actions";
+import { CLEAR_FORGOT, resetPasswordReducer } from "../../../services/actions";
 import { useDispatch } from "react-redux";
 
 export function ForgotPasswordPage() {

@@ -3,7 +3,6 @@ import { checkReponse } from "../utils/checkResponse";
 import { getCookie } from "../utils/getCookie";
 
 export const changeUserInfo = async (field) => {
-  console.log(field);
   return await fetch(`${API_URL}/auth/user`, {
     method: "PATCH",
     headers: {

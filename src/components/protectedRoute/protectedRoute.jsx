@@ -1,23 +1,32 @@
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export function ProtectedRoute({ children, ...rest }) {
+  const location = useLocation();
+
   const { isLoaded, isAuthenticated } = useSelector((state) => {
     return {
       isAuthenticated: state.auth.isAuthenticated,
-      cookie: state.auth.cookie,
       isLoaded: state.auth.isLoaded,
     };
   });
 
   if (!isLoaded) {
-    return null;
+    return <></>;
   }
 
   return (
-    <Route
-      {...rest}
-      render={() => (isAuthenticated ? children : <Redirect to="/login" />)}
-    />
+    <>
+      {isAuthenticated && isLoaded ? (
+        <Route {...rest}>{children}</Route>
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: location },
+          }}
+        />
+      )}
+    </>
   );
 }

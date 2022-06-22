@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import styles from "./loginPage.module.css";
 import {
   Button,
@@ -11,21 +11,24 @@ import {
   SET_EMAIL_LOGIN,
   SET_PASSWORD_LOGIN,
   TOGGLE_PASSWORD_LOGIN,
-} from "../../services/actions";
-import { Link, useHistory } from "react-router-dom";
+} from "../../../services/actions";
+import { Link, Redirect, useLocation } from "react-router-dom";
 
-export function LoginPage() {
-  const { email, password, isHidePassword } = useSelector((state) => {
-    return {
-      email: state.loginForm.email,
-      password: state.loginForm.password,
-      isHidePassword: state.loginForm.isHidePassword,
-    };
-  });
+export const LoginPage = memo(() => {
+  const { email, password, isHidePassword, isAuthenticated, isLoaded } =
+    useSelector((state) => {
+      return {
+        email: state.loginForm.email,
+        password: state.loginForm.password,
+        isHidePassword: state.loginForm.isHidePassword,
+        isAuthenticated: state.auth.isAuthenticated,
+        isLoaded: state.auth.isLoaded,
+      };
+    });
 
   const dispatch = useDispatch();
 
-  const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     return () => {
@@ -52,12 +55,12 @@ export function LoginPage() {
   }, [dispatch]);
 
   const handleLogin = useCallback(() => {
-    dispatch(
-      loginReducer({ email, password }, () => {
-        history.push("/");
-      })
-    );
-  }, [dispatch, email, password, history]);
+    dispatch(loginReducer({ email, password }));
+  }, [dispatch, email, password]);
+
+  if (isAuthenticated) {
+    return <Redirect to={location.state?.from.pathname || "/"} />;
+  }
 
   return (
     <section className={styles.content}>
@@ -116,4 +119,4 @@ export function LoginPage() {
       </div>
     </section>
   );
-}
+});

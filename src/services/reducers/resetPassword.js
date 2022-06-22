@@ -3,11 +3,13 @@ import {
   SET_PASSWORD_RESET,
   TOGGLE_PASSWORD_RESET,
   CLEAR_RESET,
+  SET_IS_RESETED,
 } from "../actions/auth";
 
 const initialState = {
   code: "",
   password: "",
+  isReseted: false,
   isHidePassword: true,
 };
 
@@ -17,6 +19,13 @@ export const resetPasswordReducer = (state = initialState, action) => {
       return {
         ...state,
         code: action.payload,
+      };
+    }
+
+    case SET_IS_RESETED: {
+      return {
+        ...state,
+        isReseted: true,
       };
     }
 

@@ -44,3 +44,8 @@
     width: 320px;
     text-decoration: none;
 }
+
+.button_text {
+    margin: 0px;
+    width: 100px;
+}

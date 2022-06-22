@@ -5,7 +5,6 @@ export function LoginedRoute({ children, ...rest }) {
   const { isLoaded, isAuthenticated } = useSelector((state) => {
     return {
       isAuthenticated: state.auth.isAuthenticated,
-      cookie: state.auth.cookie,
       isLoaded: state.auth.isLoaded,
     };
   });

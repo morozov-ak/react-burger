@@ -1,5 +1,5 @@
 import React from "react";
-import error_image from "../../images/error.png";
+import error_image from "../../../images/error.png";
 
 import styles from "./errorPage.module.css";
 

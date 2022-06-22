@@ -12,7 +12,7 @@ import {
   TOGGLE_PASSWORD_REGISTRATION,
   registerUserReducer,
   CLEAR_REGISTRATION,
-} from "../../services/actions";
+} from "../../../services/actions";
 import { Link } from "react-router-dom";
 
 export function RegistrationPage() {
@@ -76,7 +76,7 @@ export function RegistrationPage() {
       <p className="text text_type_main-medium mt-10 mb-5">Регистрация</p>
       <Input
         type={"text"}
-        placeholder="Name"
+        placeholder="Имя"
         onChange={handleNameChange}
         value={name}
         name={"name"}
@@ -100,7 +100,7 @@ export function RegistrationPage() {
       <div className="mt-6">
         <Input
           type={isHidePassword ? "password" : "text"}
-          placeholder="Password"
+          placeholder="Пароль"
           onChange={handlePasswordChange}
           icon={"ShowIcon"}
           value={password}
