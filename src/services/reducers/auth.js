@@ -8,13 +8,6 @@ const initialState = {
 
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    // case SET_COOKIE: {
-    //   return {
-    //     ...state,
-    //     isAuthenticated: action.payload,
-    //   };
-    // }
-
     case SET_ISLOADED: {
       return {
         ...state,

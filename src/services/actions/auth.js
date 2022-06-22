@@ -143,9 +143,6 @@ export function getUserInfoReducer() {
         dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
       }
     } catch (e) {
-      // if (e.message === "jwt expired") {
-      //   dispatch(refreshCookieReducer());
-      // }
       dispatch({ type: SET_ERROR, error: "Ошибка выполнения запроса" });
     }
   };

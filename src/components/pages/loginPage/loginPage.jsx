@@ -15,16 +15,16 @@ import {
 import { Link, Redirect, useLocation } from "react-router-dom";
 
 export const LoginPage = memo(() => {
-  const { email, password, isHidePassword, isAuthenticated, isLoaded } =
-    useSelector((state) => {
+  const { email, password, isHidePassword, isAuthenticated } = useSelector(
+    (state) => {
       return {
         email: state.loginForm.email,
         password: state.loginForm.password,
         isHidePassword: state.loginForm.isHidePassword,
         isAuthenticated: state.auth.isAuthenticated,
-        isLoaded: state.auth.isLoaded,
       };
-    });
+    }
+  );
 
   const dispatch = useDispatch();
 
