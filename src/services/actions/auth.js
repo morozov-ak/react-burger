@@ -82,7 +82,8 @@ export function loginReducer(form) {
       if (res.success) {
         const cookie = res.accessToken.split("Bearer ")[1];
         dispatch({ type: CLEAR_LOGIN });
-        dispatch({ type: SET_COOKIE, payload: cookie });
+        dispatch({ type: SET_AUTHENTICATED, payload: true });
+        dispatch({ type: SET_ISLOADED, payload: true });
         setCookie("accessToken", cookie);
         localStorage.setItem("refreshToken", res.refreshToken);
       } else {
@@ -165,7 +166,7 @@ export function logoutReducer(field) {
       await logout();
       dispatch({ type: CLEAR_PROFILE });
       dispatch({ type: CLEAR_FORGOT });
-      dispatch({ type: SET_COOKIE, payload: false });
+      dispatch({ type: SET_AUTHENTICATED, payload: false });
       deleteCookie("accessToken");
       localStorage.clear("refreshToken");
     } catch (e) {
