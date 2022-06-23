@@ -1,39 +1,64 @@
-import styles from './burgerIngredient.module.css'
-import { ingredient } from '../../types';
-import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types'
-import { memo, useCallback, useState } from 'react';
-import { Modal } from '../modal/modal';
-import { IngredientDetails } from '../ingredientDetails/ingredientDetails';
+import styles from "./burgerIngredient.module.css";
+import { ingredient } from "../../types";
+import {
+  Counter,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { memo, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 
-const BurgerIngredient = memo(({ingredient,count}) => {
-  const [isOpenModal, setIsOpenModal] = useState(false)
+const BurgerIngredient = memo(({ ingredient }) => {
+  const { fillingIds, bunId } = useSelector((state) => {
+    return {
+      showedIngredientId: state.ingredientDetails.showedIngredientId,
+      fillingIds: state.burgerConstructor.fillingIds,
+      bunId: state.burgerConstructor.bunId,
+    };
+  });
 
-  const handleOpenModal = useCallback(()=>{
-    setIsOpenModal(true)
-  },[setIsOpenModal])
+  const [, dragRef, dragPreviewRef] = useDrag({
+    type: ingredient.type,
+    item: ingredient,
+  });
+
+  const count = useMemo(() => {
+    return ingredient.type === "bun"
+      ? bunId.filter((item) => item === ingredient._id).length
+      : fillingIds.filter((item) => item === ingredient._id).length;
+  }, [bunId, fillingIds, ingredient]);
+
+  let location = useLocation();
 
   return (
-      <button className={`mb-4 ${styles.ingredient}`} onClick={handleOpenModal}>
-            {Boolean(count) && <Counter count={count} size='default'/>}
-            <img src={ingredient.image} alt={ingredient.name}/>
-            <p className={`text text_type_digits-medium mb-1 mt-1 ${styles.ingredient_name}`}>{ingredient.price} <CurrencyIcon/></p>
-            <p className={`text text_type_main-default ${styles.ingredient_name}`}>{ingredient.name}</p>
-            
-            {isOpenModal && 
-                <Modal  onClose={setIsOpenModal} headerText='Детали ингредиента'>
-                  <IngredientDetails ingredient={ingredient}/>
-                </Modal>
-            }
-      </button>
+    <Link
+      ref={dragRef}
+      className={`mb-4 ${styles.ingredient}`}
+      key={ingredient._id}
+      to={{
+        pathname: `/ingredient/${ingredient._id}`,
+        state: { background: location },
+      }}
+    >
+      {Boolean(count) && <Counter count={count} size="default" />}
+      <img ref={dragPreviewRef} src={ingredient.image} alt={ingredient.name} />
+      <p
+        className={`text text_type_digits-medium mb-1 mt-1 ${styles.ingredient_name}`}
+      >
+        {ingredient.price} <CurrencyIcon />
+      </p>
+      <p className={`text text_type_main-default ${styles.ingredient_name}`}>
+        {ingredient.name}
+      </p>
+    </Link>
   );
-})
+});
 
 BurgerIngredient.propTypes = {
   ingredient: ingredient,
-  count: PropTypes.number,
-}
+};
 
-BurgerIngredient.displayName='BurgerIngredient'
+BurgerIngredient.displayName = "BurgerIngredient";
 
 export default BurgerIngredient;

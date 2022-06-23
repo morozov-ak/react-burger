@@ -26,11 +26,26 @@
 .header_link {
     display: flex;
     align-items: center;
-    color: white;
+    color: #8585AD;
     text-decoration:none;
+}
+
+.header_link_active {
+    color: #fff;
+}
+
+.icon {
+    color: #8585AD;
 }
 
 .left_menu {
     display: flex;
     align-items: center;
+}
+
+@media screen and (max-width: 1240px) {
+    .container{
+        left:0px;
+        transform: none; 
+    }
 }
