@@ -18,7 +18,11 @@ export const Modal = memo(({ onClose, headerText, children }) => {
   );
 
   const handleClickButton = () => {
-    back();
+    if (onClose) {
+      onClose();
+    } else {
+      back();
+    }
   };
 
   const escFunction = useCallback(
@@ -49,10 +53,7 @@ export const Modal = memo(({ onClose, headerText, children }) => {
           {headerText && (
             <p className="text text_type_main-large">{headerText}</p>
           )}
-          <button
-            onClick={handleClickButton || back}
-            className={`${styles.button}`}
-          >
+          <button onClick={handleClickButton} className={`${styles.button}`}>
             <CloseIcon />
           </button>
         </header>
