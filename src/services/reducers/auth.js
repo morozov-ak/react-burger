@@ -1,4 +1,4 @@
-import { SET_COOKIE, SET_AUTHENTICATED, SET_ISLOADED } from "../actions/auth";
+import { SET_AUTHENTICATED, SET_ISLOADED } from "../actions/auth";
 
 const initialState = {
   cookie: "",

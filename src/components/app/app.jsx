@@ -16,7 +16,6 @@ import { ResetPasswordPage } from "../pages/resetPasswordPage/resetPasswordPage"
 import { ProfilePage } from "../pages/profilePage/profilePage";
 import { IngredientInfoPage } from "../pages/ingredientInfoPage/ingredientInfoPage";
 import { ProtectedRoute } from "../protectedRoute/protectedRoute";
-import { getCookie } from "../../utils/getCookie";
 import {
   SET_AUTHENTICATED,
   SET_COOKIE,
@@ -33,11 +32,10 @@ import { OrdersPage } from "../pages/ordersPage/ordersPage";
 import { setCookie } from "../../utils/setCookie";
 
 function App() {
-  const { error, isReseted, isLoaded } = useSelector((state) => {
+  const { error, isReseted } = useSelector((state) => {
     return {
       error: state.order.error,
       isReseted: state.resetPasswordForm.isReseted,
-      isLoaded: state.auth.isLoaded,
     };
   });
   const dispatch = useDispatch();
