@@ -2,6 +2,7 @@ import {
   ConstructorElement,
   Button,
   CurrencyIcon,
+  Logo,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { Modal } from "../modal/modal";
@@ -16,24 +17,27 @@ import {
 } from "../../services/actions/bun";
 import { useDrop } from "react-dnd";
 import BurgerConstructorIngredient from "../burgerConstructorIngredient/burgerConstructorIngredient";
+import { useHistory } from "react-router-dom";
 
 const BurgerConstructor = memo(() => {
   const dispatch = useDispatch();
   const { bun = 0, filling } = useSelector(
     (state) => state.burgerConstructor.createdBun
   );
-  const { fillingIds, bunId, orderId, isOpenedOrederModal } = useSelector(
-    (state) => {
+  const { fillingIds, bunId, orderId, isOpenedOrederModal, isAuthenticated } =
+    useSelector((state) => {
       return {
         fillingIds: state.burgerConstructor.fillingIds,
         bunId: state.burgerConstructor.bunId,
         orderId: state.order.orderId,
         isOpenedOrederModal: state.order.isOpenedOrederModal,
+        isAuthenticated: state.auth.isAuthenticated,
       };
-    }
-  );
+    });
 
   const [totalPrice, settotalPrice] = useState(0);
+
+  const history = useHistory();
 
   useEffect(() => {
     const { price = 0 } = bun;
@@ -67,10 +71,14 @@ const BurgerConstructor = memo(() => {
   });
 
   const handleOpenModal = useCallback(() => {
-    const orderIds = [bunId[0], ...fillingIds, bunId[1]];
-    dispatch(makeOrder(orderIds));
-    dispatch({ type: OPEN_ORDER_MODAL });
-  }, [dispatch, fillingIds, bunId]);
+    if (isAuthenticated) {
+      const orderIds = [bunId[0], ...fillingIds, bunId[1]];
+      dispatch({ type: OPEN_ORDER_MODAL });
+      dispatch(makeOrder(orderIds));
+    } else {
+      history.push("login");
+    }
+  }, [dispatch, fillingIds, bunId, history, isAuthenticated]);
 
   const handleCloseModal = useCallback(() => {
     dispatch({ type: CLOSE_ORDER_MODAL });
@@ -140,9 +148,17 @@ const BurgerConstructor = memo(() => {
         </Button>
       </div>
 
-      {isOpenedOrederModal && orderId && (
+      {isOpenedOrederModal && (
         <Modal onClose={handleCloseModal}>
-          <OrderDetails orderNumber={orderId} />
+          {orderId ? (
+            <OrderDetails orderNumber={orderId} />
+          ) : (
+            <div className={styles.logo_container}>
+              <div className={styles.logo_image}>
+                <Logo />
+              </div>
+            </div>
+          )}
         </Modal>
       )}
     </section>

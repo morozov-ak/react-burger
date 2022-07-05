@@ -5,39 +5,51 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./appHeader.module.css";
 
 function AppHeader() {
+  const { pathname } = useLocation();
   return (
     <header className={styles.appHeader}>
       <div className={styles.container}>
         <div className={styles.left_menu}>
-          <a
-            className={`text text_type_main-default ${styles.header_link}`}
-            href="ya.ru"
+          <NavLink
+            className={`${styles.header_link}`}
+            exact
+            to="/"
+            activeClassName={styles.header_link_active}
           >
-            <BurgerIcon type="primary" />
+            <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
             <p className={`text text_type_main-default ml-2`}>Конструктор</p>
-          </a>
-          <a
+          </NavLink>
+
+          <NavLink
             className={`text text_type_main-default ml-10 ${styles.header_link}`}
-            href="ya.ru"
+            to="/profile/orders"
+            activeClassName={styles.header_link_active}
           >
-            <ListIcon type="primary" />
+            <ListIcon
+              type={pathname === "/profile/orders" ? "primary" : "secondary"}
+            />
             <p className={`text text_type_main-default ml-2`}>Лента заказов</p>
-          </a>
+          </NavLink>
         </div>
         <div className={styles.logo}>
           <Logo />
         </div>
         <div>
-          <a
+          <NavLink
             className={`text text_type_main-default ${styles.header_link}`}
-            href="ya.ru"
+            exact
+            to="/profile"
+            activeClassName={styles.header_link_active}
           >
-            <ProfileIcon type="primary" />
+            <ProfileIcon
+              type={pathname === "/profile" ? "primary" : "secondary"}
+            />
             <p className={`text text_type_main-default ml-2`}>Личный кабинет</p>
-          </a>
+          </NavLink>
         </div>
       </div>
     </header>

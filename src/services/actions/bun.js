@@ -12,6 +12,7 @@ export const MOVE_INGREDIENT = "MOVE_INGREDIENT";
 export const SET_ERROR = "SET_ERROR";
 export const RESET_ORDER = "RESET_ORDER";
 export const SUCCESS_ORDER = "SUCCESS_ORDER";
+export const SUCCESS_RESET = "SUCCESS_RESET";
 
 export function fetchIngredientsReducer() {
   return async (dispatch) => {

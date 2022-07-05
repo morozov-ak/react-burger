@@ -72,3 +72,27 @@
     flex-direction: row;
     align-items: center;
 }
+
+.logo_container {
+    position: absolute;
+    left:50%;
+    top :50%;
+    transform: translate(-50%, -50%);
+    
+}
+.logo_image {
+    animation: spin 5s infinite;
+    animation-timing-function: linear;
+}
+
+
+  @keyframes spin {
+    0% {
+      transform: rotateZ(0deg);
+    }
+  
+    100% {
+      transform: rotateZ(360deg);
+    }
+
+  }
