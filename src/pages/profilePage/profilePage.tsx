@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useCallback, useEffect } from "react";
 import styles from "./profilePage.module.css";
 import {
   Button,
@@ -14,9 +14,9 @@ import {
   changeUserInfoReducer,
   logoutReducer,
   RESET_PROFILE,
-} from "../../../services/actions";
+} from "../../services/actions";
 import { NavLink } from "react-router-dom";
-import { TStore } from "../../../services/reducers";
+import { TStore } from "../../services/reducers";
 
 export function ProfilePage() {
   const { name, email, password, isChanged, isLoaded } = useSelector(
@@ -44,7 +44,7 @@ export function ProfilePage() {
   }, [dispatch, isLoaded]);
 
   const handleNameChange = useCallback(
-    (event:any) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       dispatch({
         type: SET_NAME_PROFILE,
         payload: event.target.value,
@@ -54,7 +54,7 @@ export function ProfilePage() {
   );
 
   const handleEmailChange = useCallback(
-    (event:any) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       dispatch({
         type: SET_EMAIL_PROFILE,
         payload: event.target.value,
@@ -64,7 +64,7 @@ export function ProfilePage() {
   );
 
   const handlePasswordChange = useCallback(
-    (event:any) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       dispatch({
         type: SET_PASSWORD_PROFILE,
         payload: event.target.value,
@@ -80,7 +80,8 @@ export function ProfilePage() {
   }, [dispatch]);
 
   const handleChangeField = useCallback(
-    (event:any) => {
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
       dispatch(
         changeUserInfoReducer({
           name,
@@ -129,47 +130,60 @@ export function ProfilePage() {
             В этом разделе вы можете изменить свои персональные данные
           </p>
         </section>
-        <section className={styles.inputs}>
-          <Input
-            type={"text"}
-            placeholder="Имя"
-            onChange={handleNameChange}
-            icon={"EditIcon"}
-            value={name}
-            name={"name"}
-            error={false}
-            errorText={"Ошибка"}
-            size={"default"}
-          />
-          <div className="mt-6">
+        <section className={styles.inputs} onSubmit={handleChangeField }>
+          <form className={styles.form}>
             <Input
               type={"text"}
-              placeholder="Логин"
-              onChange={handleEmailChange}
+              placeholder="Имя"
+              onChange={handleNameChange}
               icon={"EditIcon"}
-              value={email}
-              name={"email"}
+              value={name}
+              name={"name"}
               error={false}
               errorText={"Ошибка"}
               size={"default"}
             />
-          </div>
+            <div className="mt-6">
+              <Input
+                type={"text"}
+                placeholder="Логин"
+                onChange={handleEmailChange}
+                icon={"EditIcon"}
+                value={email}
+                name={"email"}
+                error={false}
+                errorText={"Ошибка"}
+                size={"default"}
+              />
+            </div>
 
-          <div className="mt-6">
-            <Input
-              type={"password"}
-              placeholder="Пароль"
-              onChange={handlePasswordChange}
-              icon={"EditIcon"}
-              value={password}
-              name="password"
-              error={false}
-              errorText={"Ошибка"}
-              size={"default"}
-            />
-          </div>
+            <div className="mt-6">
+              <Input
+                type={"password"}
+                placeholder="Пароль"
+                onChange={handlePasswordChange}
+                icon={"EditIcon"}
+                value={password}
+                name="password"
+                error={false}
+                errorText={"Ошибка"}
+                size={"default"}
+              />
+            </div>
+            {isChanged && (
+                <div className="mt-6">
+                  <Button
+                    type="primary"
+                    size="medium"
+                    
+                  >
+                    <p className={styles.button_text}>Сохранить</p>
+                  </Button>
+                </div>
+            )}
+          </form>
+          
           {isChanged && (
-            <>
               <div className="mt-6">
                 <Button
                   type="primary"
@@ -179,16 +193,6 @@ export function ProfilePage() {
                   <p className={styles.button_text}>Отмена</p>
                 </Button>
               </div>
-              <div className="mt-6">
-                <Button
-                  type="primary"
-                  size="medium"
-                  onClick={handleChangeField}
-                >
-                  <p className={styles.button_text}>Сохранить</p>
-                </Button>
-              </div>
-            </>
           )}
         </section>
       </div>

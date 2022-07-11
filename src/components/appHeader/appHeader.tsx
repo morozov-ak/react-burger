@@ -36,7 +36,12 @@ function AppHeader() {
           </NavLink>
         </div>
         <div className={styles.logo}>
-          <Logo />
+          <NavLink
+            exact
+            to="/"
+          >
+            <Logo />
+          </NavLink>
         </div>
         <div>
           <NavLink

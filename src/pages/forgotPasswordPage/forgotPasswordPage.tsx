@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import styles from "./forgotPasswordPage.module.css";
 import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useHistory } from "react-router-dom";
-import { CLEAR_FORGOT, resetPasswordReducer } from "../../../services/actions";
+import { CLEAR_FORGOT, resetPasswordReducer } from "../../services/actions";
 import { useDispatch } from "react-redux";
 
 export function ForgotPasswordPage() {
@@ -17,7 +17,8 @@ export function ForgotPasswordPage() {
     setEmail(event.target.value);
   }, []);
 
-  const handleForgotPassword = useCallback(() => {
+  const handleForgotPassword = useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     dispatch(
       resetPasswordReducer(email, () => {
         history.push("/reset-password");
@@ -36,25 +37,27 @@ export function ForgotPasswordPage() {
       <p className="text text_type_main-medium mt-10 mb-5">
         Восстановление пароля
       </p>
+      <form onSubmit={handleForgotPassword} className={styles.form}>
+        <div className="mt-6">
+          <Input
+            type={"text"}
+            placeholder="E-mail"
+            onChange={handleChange}
+            value={email}
+            name={"email"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+          />
+        </div>
 
-      <div className="mt-6">
-        <Input
-          type={"text"}
-          placeholder="E-mail"
-          onChange={handleChange}
-          value={email}
-          name={"email"}
-          error={false}
-          errorText={"Ошибка"}
-          size={"default"}
-        />
-      </div>
-
-      <div className="mt-6">
-        <Button type="primary" size="medium" onClick={handleForgotPassword}>
-          Восстановить
-        </Button>
-      </div>
+        <div className="mt-6">
+          <Button type="primary" size="medium" >
+            Восстановить
+          </Button>
+        </div>
+      </form>
+      
       <div className={`mt-20 ${styles.helper_text}`}>
         <p className="text text_color_inactive text_type_main-default mr-2">
           Вспомнили пароль?

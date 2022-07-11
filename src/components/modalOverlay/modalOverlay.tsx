@@ -9,7 +9,7 @@ export const ModalOverlay = memo(({ onClose }:TModalOverlay) => {
   const overlayRef = useRef<HTMLLIElement>(null);
 
   const handleOverlayClick = useCallback(
-    (event:any) => {
+    (event : MouseEvent) => {
       if (overlayRef.current === event.target) {
         onClose();
       }

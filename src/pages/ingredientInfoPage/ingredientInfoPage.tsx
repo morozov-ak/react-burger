@@ -4,8 +4,8 @@ import styles from "./ingredientInfoPage.module.css";
 import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
-import { IngredientDetails } from "../../ingredientDetails/ingredientDetails";
-import { TStore } from "../../../services/reducers";
+import { IngredientDetails } from "../../components/ingredientDetails/ingredientDetails";
+import { TStore } from "../../services/reducers";
 
 export function IngredientInfoPage() {
   let { id }:{id:string} = useParams();

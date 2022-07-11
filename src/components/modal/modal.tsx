@@ -31,8 +31,8 @@ export const Modal:FunctionComponent<TModal> = memo(({ onClose, headerText, chil
   };
 
   const escFunction = useCallback(
-    (event: any) => {
-      if (event.keyCode === ESC_KEYCODE) {
+    (event: KeyboardEvent) => {
+      if (event.key === ESC_KEYCODE) {
         if (onClose) {
           onClose();
         } else {
@@ -68,7 +68,8 @@ export const Modal:FunctionComponent<TModal> = memo(({ onClose, headerText, chil
       </section>
     </>
   );
-
   
-    return createPortal(ModalComponent, document.getElementById("modal") as HTMLElement);
+  const modalElement  = document.getElementById("modal")
+            
+  return modalElement ? createPortal(ModalComponent, modalElement) : null;
 });

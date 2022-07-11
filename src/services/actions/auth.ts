@@ -61,6 +61,48 @@ export type TChangeProfile = {
   email: string,
 }
 
+export function initialReducer() {
+  return async (dispatch: Dispatch) => {
+    const token = localStorage.getItem("refreshToken");
+    if (token) {
+      getUserInfo()
+        .then((res) => {
+          if (res.success) {
+            dispatch({ type: SET_AUTHENTICATED, payload: true });
+            dispatch({ type: SET_ISLOADED });
+          }
+        })
+        .catch((e) => {
+          if (!e.success) {
+            refreshCookie()
+              .then((res) => {
+                if (res.success) {
+                  const cookie = res.accessToken.split("Bearer ")[1];
+                  setCookie("accessToken", cookie);
+                  localStorage.setItem("refreshToken", res.refreshToken);
+                  dispatch({ type: SET_COOKIE, payload: cookie });
+                  dispatch({ type: SET_AUTHENTICATED, payload: true });
+                  dispatch({ type: SET_ISLOADED });
+                } else {
+                  dispatch({
+                    type: SET_ERROR,
+                    error: "Ошибка выполнения запроса",
+                  });
+                  dispatch({ type: SET_ISLOADED });
+                }
+              })
+              .catch((e) => {
+                deleteCookie("accessToken");
+                localStorage.removeItem("refreshToken");
+                dispatch({ type: SET_ISLOADED });
+              });
+          }
+        });
+    } else {
+      dispatch({ type: SET_ISLOADED });
+    }
+  };
+}
 export function resetPasswordReducer(email:string, cb:()=> void) {
   return async (dispatch: Dispatch) => {
     try {

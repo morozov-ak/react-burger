@@ -7,29 +7,22 @@ import {
   fetchIngredientsReducer,
   RESET_ORDER,
 } from "../../services/actions/bun";
-import { ConstructorPage } from "../pages/constructorPage/constructorPage";
-import { ErrorPage } from "../pages/errorPage/errorPage";
-import { LoginPage } from "../pages/loginPage/loginPage";
-import { RegistrationPage } from "../pages/registrationPage/registrationPage";
-import { ForgotPasswordPage } from "../pages/forgotPasswordPage/forgotPasswordPage";
-import { ResetPasswordPage } from "../pages/resetPasswordPage/resetPasswordPage";
-import { ProfilePage } from "../pages/profilePage/profilePage";
-import { IngredientInfoPage } from "../pages/ingredientInfoPage/ingredientInfoPage";
+import { ConstructorPage } from "../../pages/constructorPage/constructorPage";
+import { ErrorPage } from "../../pages/errorPage/errorPage";
+import { LoginPage } from "../../pages/loginPage/loginPage";
+import { RegistrationPage } from "../../pages/registrationPage/registrationPage";
+import { ForgotPasswordPage } from "../../pages/forgotPasswordPage/forgotPasswordPage";
+import { ResetPasswordPage } from "../../pages/resetPasswordPage/resetPasswordPage";
+import { ProfilePage } from "../../pages/profilePage/profilePage";
+import { IngredientInfoPage } from "../../pages/ingredientInfoPage/ingredientInfoPage";
 import { ProtectedRoute } from "../protectedRoute/protectedRoute";
 import {
-  SET_AUTHENTICATED,
-  SET_COOKIE,
-  SET_ISLOADED,
-  SET_ERROR,
+  initialReducer,
 } from "../../services/actions";
-import { getUserInfo } from "../../api/getUserInfo";
-import { refreshCookie } from "../../api/refreshCookie";
 import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredientDetails/ingredientDetails";
-import { deleteCookie } from "../../utils/deleteCookie";
 import { LoginedRoute } from "../loginedRoute/loginedRoute";
-import { OrdersPage } from "../pages/ordersPage/ordersPage";
-import { setCookie } from "../../utils/setCookie";
+import { OrdersPage } from "../../pages/ordersPage/ordersPage";
 import { TStore } from "../../services/reducers";
 
 function App() {
@@ -42,44 +35,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem("refreshToken");
-    if (token) {
-      getUserInfo()
-        .then((res) => {
-          if (res.success) {
-            dispatch({ type: SET_AUTHENTICATED, payload: true });
-            dispatch({ type: SET_ISLOADED });
-          }
-        })
-        .catch((e) => {
-          if (!e.success) {
-            refreshCookie()
-              .then((res) => {
-                if (res.success) {
-                  const cookie = res.accessToken.split("Bearer ")[1];
-                  setCookie("accessToken", cookie);
-                  localStorage.setItem("refreshToken", res.refreshToken);
-                  dispatch({ type: SET_COOKIE, payload: cookie });
-                  dispatch({ type: SET_AUTHENTICATED, payload: true });
-                  dispatch({ type: SET_ISLOADED });
-                } else {
-                  dispatch({
-                    type: SET_ERROR,
-                    error: "Ошибка выполнения запроса",
-                  });
-                  dispatch({ type: SET_ISLOADED });
-                }
-              })
-              .catch((e) => {
-                deleteCookie("accessToken");
-                localStorage.removeItem("refreshToken");
-                dispatch({ type: SET_ISLOADED });
-              });
-          }
-        });
-    } else {
-      dispatch({ type: SET_ISLOADED });
-    }
+    dispatch(initialReducer() as any)
   }, [dispatch]);
 
   useEffect(() => {

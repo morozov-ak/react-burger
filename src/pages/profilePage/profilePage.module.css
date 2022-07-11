@@ -12,6 +12,12 @@
    align-items: center;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+
 .menu {
     position: absolute;
     margin-top:180px;
