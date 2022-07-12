@@ -1,0 +1,57 @@
+.content {
+    overflow: hidden;
+    width: 1240px;
+    margin: 0 auto;
+    height: calc(100vh - 88px);
+}
+
+.inputs {
+   display: flex;
+   margin-top:180px;
+   flex-direction: column;
+   align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+
+.menu {
+    position: absolute;
+    margin-top:180px;
+    display: flex;
+    flex-direction: column;
+}
+
+.constructor_wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.helper_text {
+    
+    display: flex;
+    flex-direction: row;
+ }
+ 
+.link {
+    text-decoration: none;
+}
+ 
+.link_active {
+    text-decoration: none;
+    color: #fff;
+}
+
+.helper {
+    opacity: 0.4;
+    width: 320px;
+    text-decoration: none;
+}
+
+.button_text {
+    margin: 0px;
+    width: 100px;
+}
