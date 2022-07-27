@@ -8,6 +8,7 @@ import { registrationReducer, TRegistrationStore } from "./registration";
 import { resetPasswordReducer, TResetStore } from "./resetPassword";
 import { profileReducer, TProfileStore } from "./profile";
 import { authReducer, TAuthStore } from "./auth";
+import { TWsOrdersState, wsOrdersReducer } from "./ws";
 
 export type TStore = {
   auth: TAuthStore,
@@ -19,6 +20,7 @@ export type TStore = {
   registrationForm: TRegistrationStore,
   resetPasswordForm: TResetStore,
   profileForm: TProfileStore,
+  wsOrders: TWsOrdersState,
 }
 
 export const rootReducer = combineReducers({
@@ -31,4 +33,5 @@ export const rootReducer = combineReducers({
   registrationForm: registrationReducer,
   resetPasswordForm: resetPasswordReducer,
   profileForm: profileReducer,
+  wsOrders:wsOrdersReducer,
 });

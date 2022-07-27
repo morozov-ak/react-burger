@@ -78,6 +78,7 @@ export function initialReducer() {
               .then((res) => {
                 if (res.success) {
                   const cookie = res.accessToken.split("Bearer ")[1];
+                  deleteCookie("accessToken");
                   setCookie("accessToken", cookie);
                   localStorage.setItem("refreshToken", res.refreshToken);
                   dispatch({ type: SET_COOKIE, payload: cookie });

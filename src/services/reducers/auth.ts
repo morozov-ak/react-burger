@@ -1,7 +1,6 @@
 import { SET_AUTHENTICATED, SET_ISLOADED } from "../actions/auth";
 
 export type TAuthStore = {
-  cookie: string,
   isLoaded: boolean,
   isAuthenticated: boolean,
 }
@@ -18,7 +17,6 @@ export type Actions =
 
 
 const initialState = {
-  cookie: "",
   isLoaded: false,
   isAuthenticated: false,
 };

@@ -26,7 +26,6 @@ export const LoginPage = memo(() => {
       };
     }
   );
-  //console.log(isAuthenticated);
 
   const dispatch = useDispatch();
 

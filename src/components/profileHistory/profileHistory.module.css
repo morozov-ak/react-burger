@@ -1,0 +1,10 @@
+.content {
+    margin-left: 60px;
+    margin-top:180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+    height: calc(100vh - 300px);
+    overflow-x:hidden; 
+}

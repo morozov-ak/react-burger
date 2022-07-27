@@ -1,12 +1,3 @@
-.content {
-    overflow: hidden;
-    width: 1240px;
-    margin: 0 auto;
-    height: calc(100vh - 88px);
-    display: flex;
-    flex-direction: row;
-}
-
 .menu {
     margin-top:180px;
     display: flex;

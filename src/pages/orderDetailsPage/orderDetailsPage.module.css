@@ -1,0 +1,44 @@
+.root {
+  width: 100%;
+  max-width: 640px;
+  margin: 0px auto 24px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 415px;
+  overflow-y: scroll;
+}
+
+.ingredient {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ingredient:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.leftSide {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.title {
+  width: 100%;
+  max-width: 415px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+}
+
+.info {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+}
