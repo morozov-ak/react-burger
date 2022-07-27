@@ -25,6 +25,7 @@ import { LoginedRoute } from "../loginedRoute/loginedRoute";
 import { OrdersPage } from "../../pages/ordersPage/ordersPage";
 import { TStore } from "../../services/reducers";
 import OrderDetailsPage from "../../pages/orderDetailsPage/orderDetailsPage";
+import OrdersFeed from "../../pages/orders-feed/ordersFeed";
 
 function App() {
   const { error, isReseted } = useSelector((state:TStore) => {
@@ -89,6 +90,15 @@ function App() {
           <OrderDetailsPage />
         </ProtectedRoute>
 
+        <Route path="/feed" exact>
+          <OrdersFeed />
+        </Route>
+
+        <ProtectedRoute exact path="/feed/:id">
+          <OrderDetailsPage />
+        </ProtectedRoute>
+
+
         <Route path="/ingredient/:id">
           <IngredientInfoPage />
         </Route>
@@ -108,6 +118,16 @@ function App() {
       {background && (
         <Route
           path="/profile/orders/:id"
+          children={
+            <Modal>
+              <OrderDetailsPage />
+            </Modal>
+          }
+        />
+      )}
+      {background && (
+        <Route
+          path="/feed/:id"
           children={
             <Modal>
               <OrderDetailsPage />

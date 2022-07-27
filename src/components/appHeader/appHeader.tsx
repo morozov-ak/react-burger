@@ -26,11 +26,11 @@ function AppHeader() {
 
           <NavLink
             className={`text text_type_main-default ml-10 ${styles.header_link}`}
-            to="/profile/orders"
+            to="/feed"
             activeClassName={styles.header_link_active}
           >
             <ListIcon
-              type={pathname === "/profile/orders" ? "primary" : "secondary"}
+              type={pathname === "/feed" ? "primary" : "secondary"}
             />
             <p className={`text text_type_main-default ml-2`}>Лента заказов</p>
           </NavLink>

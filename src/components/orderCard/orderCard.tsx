@@ -3,8 +3,6 @@ import styles from "./orderCard.module.css";
 import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import * as H from "history";
-
 import { TOrder } from "../../services/reducers/ws";
 import { Link, useLocation } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
@@ -14,14 +12,15 @@ import { TStore } from "../../services/reducers";
 
 type PropsType = {
   order:TOrder
+  type?: 'feed' | 'orders'
 }
 
-export const  OrderCard:FunctionComponent<PropsType> = ({order}) => {
+export const  OrderCard:FunctionComponent<PropsType> = ({order,type='orders'}) => {
   const ingredientsById = useSelector((state:TStore) => state.ingredients.ingredientsById);
   const location = useLocation();
 
   let totalCost = useMemo(() => 
-    order.ingredients.reduce((total,ingredient) => total + ingredientsById[ingredient].price
+    order.ingredients.reduce((total,ingredient) => ingredientsById[ingredient] ? total + ingredientsById[ingredient].price : total
     , 0)
   ,[order.ingredients, ingredientsById])
 
@@ -32,6 +31,8 @@ export const  OrderCard:FunctionComponent<PropsType> = ({order}) => {
         return 'Готов'
       case 'pending':
         return 'Готовится'
+      case 'created':
+        return 'Создан'
       default:
         return order.status
     }
@@ -44,7 +45,7 @@ export const  OrderCard:FunctionComponent<PropsType> = ({order}) => {
       <Link
         className={styles.order}
         to={{
-          pathname: `orders/${order._id}`,
+          pathname: `${type}/${order._id}`,
           state: { background: location },
         }}
       >
@@ -61,7 +62,7 @@ export const  OrderCard:FunctionComponent<PropsType> = ({order}) => {
 
         <div className={styles.ingredientsContainer}>
           <ul className={styles.ingredientsList}>
-            <IngredientsSet ingredients={order.ingredients}/>
+            <IngredientsSet order={order}/>
           </ul>
           <p className={styles.priceContainer}>
             <span className="text text_type_digits-default mr-2">

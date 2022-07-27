@@ -1,31 +1,53 @@
  import React, { useEffect, useMemo } from "react";
 import styles from "./orderDetailsPage.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useParams } from "react-router-dom";
+import { useParams, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { TStore } from "../../services/reducers";
 import { IngredientsIcon } from "../../components/ingredientIcon/ingredientIcon";
 import { formatDate } from "../../utils/formatDate";
-import { WS_START_WITH_CUSTOM_URL } from "../../services/actions/ws";
+import { wsActions, WS_START_WITH_CUSTOM_URL } from "../../services/actions/ws";
 import { useDispatch } from "react-redux";
 import { WS_URL } from "../../constants/constants";
 import { getCookie } from "../../utils/getCookie";
 
 const OrderDetailsPage = () => {
-  
-  const ordersById = useSelector((state:TStore) => state.wsOrders.ordersById);
-  const ingredientsById = useSelector((state:TStore) => state.ingredients.ingredientsById);
+    const { ordersById, ingredientsById } = useSelector((state:TStore) => {
+    return {
+      ordersById: state.wsOrders.ordersById,
+      ingredientsById: state.ingredients.ingredientsById,
+    };
+  });
+
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch()
+  const isOrders = useRouteMatch("/profile/orders")
+  const isFeed = useRouteMatch("/feed")
 
   useEffect(() => {
     if (!Object.keys(ordersById).length) {
-      dispatch({
-        type: WS_START_WITH_CUSTOM_URL,
-        payload: `${WS_URL}?token=${getCookie("accessToken")}`,
-      });
+      if(isOrders){
+        dispatch({
+          type: WS_START_WITH_CUSTOM_URL,
+          payload: `${WS_URL}?token=${getCookie("accessToken")}`,
+        });
+        return () => {
+          dispatch({ type: wsActions.wsClose });
+        };
+      }
+
+      if(isFeed){
+        dispatch({
+          type: wsActions.wsInit
+        });
+        return () => {
+          dispatch({ type: wsActions.wsClose });
+        };
+      }
+
     }
-  }, [ordersById,dispatch]);
+
+  }, []);
   
   const order = ordersById[id]
 
@@ -35,6 +57,8 @@ const OrderDetailsPage = () => {
         return 'Готов'
       case 'pending':
         return 'Готовится'
+      case 'created':
+        return 'Создан'
       default:
         return order?.status
     }
@@ -45,18 +69,15 @@ const OrderDetailsPage = () => {
   }
 
   let totalPrice = 0
-
-  const countedIngredients = order?.ingredients.reduce((res,ingredient) => {
-      totalPrice += ingredientsById[ingredient].price
+  let countedIngredients:{[key: string]: number}
+  if(Object.keys(ingredientsById)){
+    countedIngredients = order?.ingredients.reduce((res,ingredient) => {
+      totalPrice += ingredientsById[ingredient] ? ingredientsById[ingredient].price : 0
       return res[ingredient] ? {...res, [ingredient]:res[ingredient] + 1} : {...res, [ingredient]:1} 
     }
     ,{} as {[key: string]: number})
-
-
-  if (!order) {
-    return null;
   }
-
+  
 
   return (
     <div  className={styles.root}>
@@ -75,11 +96,13 @@ const OrderDetailsPage = () => {
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <ul className={"custom-scroll mb-10"}>
         
-        {order.ingredients.slice(0,-1).map((ingredient, i) => 
+        {order.ingredients.slice(0,-1).map((ingredient, index) => 
           {const ingredientObject = ingredientsById[ingredient]
-          return <li key={ingredientObject._id} className={styles.ingredient}>
+          if(ingredientObject){
+            return <li key={`${ingredientObject._id}${index}`} className={styles.ingredient}>
             <div className={styles.leftSide}>
               <IngredientsIcon
+              
                 ingredient={ingredientObject._id}
               />
               <p className="text text_type_main-default ml-4">
@@ -94,6 +117,7 @@ const OrderDetailsPage = () => {
               <CurrencyIcon type="primary" />
             </p>
           </li>}
+          }
         )}
 
       </ul>

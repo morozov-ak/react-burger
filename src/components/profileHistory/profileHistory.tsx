@@ -8,35 +8,18 @@ import { WS_CONNECTION_CLOSE, WS_START_WITH_CUSTOM_URL } from "../../services/ac
 import { getCookie } from "../../utils/getCookie";
 import { WS_URL } from "../../constants/constants";
 import { OrderCard } from "../orderCard/orderCard";
-import { CLEAR_PROFILE, getUserInfoReducer } from "../../services/actions";
 
 export function ProfileHistory() {
 
-  const { name, email, password, isChanged, isLoaded,orders } = useSelector(
+  const { orders } = useSelector(
     (state:TStore) => {
       return {
-        isLoaded: state.auth.isLoaded,
-        isChanged: state.profileForm.isChanged,
-        name: state.profileForm.name,
-        email: state.profileForm.email,
-        password: state.profileForm.password,
         orders: state.wsOrders.orders,
       };
     }
   );
 
   const dispatch = useDispatch();
-  
-
-  useEffect(() => {
-    if (isLoaded) {
-      dispatch(getUserInfoReducer() as any);
-    }
-
-    return () => {
-      dispatch({ type: CLEAR_PROFILE });
-    };
-  }, [dispatch, isLoaded]);
   
   useEffect(() => {
       dispatch({
@@ -48,9 +31,6 @@ export function ProfileHistory() {
       dispatch({ type: WS_CONNECTION_CLOSE });
     };
   }, [dispatch]);
-
-
-
 
   if (orders?.length) {
     return (
