@@ -1,14 +1,14 @@
-import { Logo } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-
+import React, {  FunctionComponent,  } from "react";
 import styles from "./ordersPage.module.css";
+import { ProfileSidebar } from "../../components/profileSidebar/profileSidebar";
+import { ProfileHistory } from "../../components/profileHistory/profileHistory";
 
-export function OrdersPage() {
-  return (
-    <section className={styles.content}>
-      <div className={styles.logo_image}>
-        <Logo />
+export const OrdersPage:FunctionComponent = () => {
+    return (
+      <div className={styles.content}>
+        <ProfileSidebar/>
+        <ProfileHistory/>
       </div>
-    </section>
-  );
+    );
+
 }

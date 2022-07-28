@@ -21,7 +21,7 @@ export type ClearAction = { type: typeof CLEAR_REGISTRATION }
 
 
 
-export type Actions =
+export type RegistrationActions =
     | SetNameAction
     | SetEmailAction
     | SetPasswordAction
@@ -35,7 +35,7 @@ const initialState = {
   isHidePassword: true,
 };
 
-export const registrationReducer = (state:TRegistrationStore = initialState, action:Actions) => {
+export const registrationReducer = (state:TRegistrationStore = initialState, action:RegistrationActions) => {
   switch (action.type) {
     case SET_NAME_REGISTRATION: {
       return {

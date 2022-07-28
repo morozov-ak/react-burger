@@ -1,0 +1,26 @@
+.menu {
+    margin-top:180px;
+    display: flex;
+    flex-direction: column;
+}
+
+.link {
+    text-decoration: none;
+}
+ 
+.link_active {
+    text-decoration: none;
+    color: #fff;
+}
+
+.helper {
+    opacity: 0.4;
+    width: 320px;
+    text-decoration: none;
+}
+
+.rightContent {
+    margin-top:180px;
+    width: 100%;
+}
+

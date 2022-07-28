@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect, useState } from "react";
+import React, { FormEvent, memo, useCallback, useEffect, useState } from "react";
 import styles from "./forgotPasswordPage.module.css";
 import {
   Button,
@@ -6,9 +6,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useHistory } from "react-router-dom";
 import { CLEAR_FORGOT, resetPasswordReducer } from "../../services/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 
-export function ForgotPasswordPage() {
+export const ForgotPasswordPage = memo(() => {
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
@@ -71,4 +71,4 @@ export function ForgotPasswordPage() {
       </div>
     </section>
   );
-}
+})

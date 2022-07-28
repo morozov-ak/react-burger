@@ -8,7 +8,6 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../orderDetails/orderDetails";
 import styles from "./burgerConstructor.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENT,
   CLOSE_ORDER_MODAL,
@@ -18,12 +17,18 @@ import {
 import { useDrop } from "react-dnd";
 import BurgerConstructorIngredient from "../burgerConstructorIngredient/burgerConstructorIngredient";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 const BurgerConstructor = memo(() => {
   const dispatch = useDispatch();
-  const { bun = 0, filling } = useSelector(
-    (state) => state.burgerConstructor.createdBun
-  );
+
+  const { bun = 0, filling } = useSelector((state) => {
+    return {
+      bun: state.burgerConstructor.bun,
+      filling: state.burgerConstructor.filling,
+    };
+  });
+
   const { fillingIds, bunId, orderId, isOpenedOrederModal, isAuthenticated } =
     useSelector((state) => {
       return {

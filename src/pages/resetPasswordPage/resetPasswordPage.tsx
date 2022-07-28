@@ -4,7 +4,6 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import {
   changePasswordReducer,
   CLEAR_RESET,
@@ -13,10 +12,10 @@ import {
   TOGGLE_PASSWORD_RESET,
 } from "../../services/actions";
 import { Link, useHistory } from "react-router-dom";
-import { TStore } from "../../services/reducers";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 export function ResetPasswordPage() {
-  const { password, code, isHidePassword } = useSelector((state:TStore) => {
+  const { password, code, isHidePassword } = useSelector((state) => {
     return {
       password: state.resetPasswordForm.password,
       code: state.resetPasswordForm.code,

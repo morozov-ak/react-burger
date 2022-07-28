@@ -1,13 +1,16 @@
 import { combineReducers } from "redux";
-import { orderReducer, TOrderStore } from "./order";
-import { ingredientReducer, TIngredientsStore } from "./ingredients";
-import { burgerConstructorReducer, TBurgerConstructor } from "./burgerConstructor";
-import { ingredientDetailsReducer, TIngredientDetailsStore } from "./ingredientDetails";
-import { loginReducer, TLoginStore } from "./login";
-import { registrationReducer, TRegistrationStore } from "./registration";
-import { resetPasswordReducer, TResetStore } from "./resetPassword";
-import { profileReducer, TProfileStore } from "./profile";
-import { authReducer, TAuthStore } from "./auth";
+import { OrderActions, orderReducer, TOrderStore } from "./order";
+import { FetchIngredientsAction, ingredientReducer, TIngredientsStore } from "./ingredients";
+import { burgerConstructorReducer, ConstructorActions, TBurgerConstructor } from "./burgerConstructor";
+import { DetailsActions, ingredientDetailsReducer, TIngredientDetailsStore } from "./ingredientDetails";
+import { LoginActions, loginReducer, TLoginStore } from "./login";
+import { RegistrationActions, registrationReducer, TRegistrationStore } from "./registration";
+import { ResetActions, resetPasswordReducer, TResetStore } from "./resetPassword";
+import { ProfileActions, profileReducer, TProfileStore } from "./profile";
+import { AuthActions, authReducer, TAuthStore } from "./auth";
+import { TWsOrdersState, WsActions, wsOrdersReducer } from "./ws";
+import { ForgotActions, forgotPasswordReducer } from "./forgotPassword";
+
 
 export type TStore = {
   auth: TAuthStore,
@@ -19,7 +22,21 @@ export type TStore = {
   registrationForm: TRegistrationStore,
   resetPasswordForm: TResetStore,
   profileForm: TProfileStore,
+  wsOrders: TWsOrdersState,
 }
+
+export type TApplicationActions = 
+    |AuthActions
+    |ConstructorActions
+    |ForgotActions
+    |DetailsActions
+    |FetchIngredientsAction
+    |LoginActions
+    |OrderActions
+    |ProfileActions
+    |RegistrationActions
+    |ResetActions
+    |WsActions
 
 export const rootReducer = combineReducers({
   auth: authReducer,
@@ -31,4 +48,6 @@ export const rootReducer = combineReducers({
   registrationForm: registrationReducer,
   resetPasswordForm: resetPasswordReducer,
   profileForm: profileReducer,
+  wsOrders:wsOrdersReducer,
+  forgotForm:forgotPasswordReducer,
 });

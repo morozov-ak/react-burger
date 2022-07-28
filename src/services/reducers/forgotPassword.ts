@@ -4,12 +4,12 @@ export type TForgotStore = {
   email: string,
 }
 
-export type SetEmailForgotAction = { type: typeof SET_EMAIL_FORGOT ,payload:string}
+export type SetEmailForgotAction = { type: typeof SET_EMAIL_FORGOT, payload:string}
 export type ClearForgotAction = { type: typeof CLEAR_FORGOT }
 
 
 
-export type Actions =
+export type ForgotActions =
     | SetEmailForgotAction
     | ClearForgotAction
 
@@ -20,7 +20,7 @@ const initialState = {
   email: "",
 };
 
-export const resetPasswordReducer = (state:TForgotStore = initialState, action:Actions) => {
+export const forgotPasswordReducer = (state:TForgotStore = initialState, action:ForgotActions) => {
   switch (action.type) {
     case SET_EMAIL_FORGOT: {
       return {

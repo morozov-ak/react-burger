@@ -1,0 +1,31 @@
+  .itemBg {
+    margin-left: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(to left,#801AB2, #4C4CFF);
+    overflow: hidden;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    //border: 2px solid transparent;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #131316;
+    overflow: hidden;
+  }
+
+  .image {
+    width: 100px;
+   
+  }
+  
+
+  

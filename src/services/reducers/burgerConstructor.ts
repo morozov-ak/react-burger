@@ -7,10 +7,8 @@ import {
 } from "../actions/bun";
 
 export type TBurgerConstructor = {
-  createdBun: {
-    bun: string | undefined,
-    filling: Array<TIngredient>,
-  },
+  bun: TIngredient | undefined,
+  filling: Array<TIngredient>,
   fillingIds: Array<string>,
   bunId: Array<string>,
 }
@@ -22,7 +20,7 @@ export type CloseOrderAction = { type: typeof CLOSE_ORDER_MODAL }
 
 
 
-export type Actions =
+export type ConstructorActions =
     | AddIngredientAction
     | MoveIngredientAction
     | CloseOrderAction
@@ -31,56 +29,48 @@ export type Actions =
 
 
 const initialState = {
-  createdBun: {
-    bun: undefined,
-    filling: [],
-  },
+  bun: undefined,
+  filling: [],
   fillingIds: [],
   bunId: [],
 };
 
-export const burgerConstructorReducer = (state:TBurgerConstructor = initialState, action:Actions) => {
+export const burgerConstructorReducer = (state:TBurgerConstructor = initialState, action:ConstructorActions) => {
   switch (action.type) {
     case ADD_INGREDIENT: {
       if (action.item.type === "bun") {
         return {
           ...state,
-          createdBun: { ...state.createdBun, bun: action.item },
+          bun: action.item,
           bunId: [action.item._id, action.item._id],
         };
       } else {
         return {
           ...state,
-          createdBun: {
-            ...state.createdBun,
-            filling: [...state.createdBun.filling, action.item],
-          },
+          filling: [...state.filling, action.item],
           fillingIds: [...state.fillingIds, action.item._id],
         };
       }
     }
 
     case MOVE_INGREDIENT: {
-      const targetIndex = state.createdBun.filling.findIndex(
+      const targetIndex = state.filling.findIndex(
         (item) => item.uid === action.targetItem.uid
       );
-      const sourceIndex = state.createdBun.filling.findIndex(
+      const sourceIndex = state.filling.findIndex(
         (item) => item.uid === action.sourceItem.uid
       );
-      const newFilling = new Array(...state.createdBun.filling);
+      const newFilling = new Array(...state.filling);
       newFilling.splice(sourceIndex, 1);
       newFilling.splice(targetIndex, 0, action.sourceItem);
       return {
         ...state,
-        createdBun: {
-          ...state.createdBun,
-          filling: newFilling,
-        },
+        filling: newFilling,
       };
     }
 
     case REMOVE_INGREDIENT: {
-      const newFilling = new Array(...state.createdBun.filling);
+      const newFilling = new Array(...state.filling);
       const newFillingIds = new Array(...state.fillingIds);
       const sourceIndexFillings = newFilling.findIndex(
         (item) => item.uid === action.payload.uid
@@ -93,23 +83,13 @@ export const burgerConstructorReducer = (state:TBurgerConstructor = initialState
 
       return {
         ...state,
-        createdBun: {
-          ...state.createdBun,
-          filling: newFilling,
-        },
+        filling: newFilling,
         fillingIds: newFillingIds,
       };
     }
 
     case CLOSE_ORDER_MODAL: {
-      return {
-        createdBun: {
-          bun: undefined,
-          filling: [],
-        },
-        fillingIds: [],
-        bunId: [],
-      };
+      return initialState;
     }
 
     default: {
