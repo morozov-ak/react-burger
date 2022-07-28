@@ -3,7 +3,6 @@ import React, { useMemo, useState } from "react";
 import styles from "./burgerIngredients.module.css";
 import BurgerIngredient from "../burgerIngredient/burgerIngredient";
 import { useInView } from "react-intersection-observer";
-import { TStore } from "../../services/reducers";
 import { TIngredient } from "../../types/types";
 import { useSelector } from "../../services/hooks";
 
@@ -55,7 +54,7 @@ function BurgerIngredients() {
 
   const ingredientsByCategories = useMemo(() => {
     return ingredients.reduce(
-      (acc:TSortIngredients, ingredient) => {
+      (acc, ingredient) => {
         return {
           ...acc,
           [ingredient.type]: [...acc[ingredient.type], ingredient],
@@ -90,7 +89,7 @@ function BurgerIngredients() {
             Булки
           </p>
           <div className={`pl-4 ${styles.ingredients_wrapper}`} ref={bunRef}>
-            {ingredientsByCategories.bun.map((ingredient:TIngredient) => (
+            {ingredientsByCategories.bun.map((ingredient) => (
               <BurgerIngredient key={ingredient._id} ingredient={ingredient} />
             ))}
           </div>
@@ -98,7 +97,7 @@ function BurgerIngredients() {
             Соусы
           </p>
           <div className={`pl-4 ${styles.ingredients_wrapper}`} ref={sauceRef}>
-            {ingredientsByCategories.sauce.map((ingredient:TIngredient) => (
+            {ingredientsByCategories.sauce.map((ingredient) => (
               <BurgerIngredient key={ingredient._id} ingredient={ingredient} />
             ))}
           </div>
@@ -106,7 +105,7 @@ function BurgerIngredients() {
             Начинки
           </p>
           <div className={`pl-4 ${styles.ingredients_wrapper}`} ref={mainRef}>
-            {ingredientsByCategories.main.map((ingredient:TIngredient) => (
+            {ingredientsByCategories.main.map((ingredient) => (
               <BurgerIngredient key={ingredient._id} ingredient={ingredient} />
             ))}
           </div>

@@ -13,7 +13,6 @@ import {
   changeUserInfoReducer,
   RESET_PROFILE,
 } from "../../services/actions";
-import { TStore } from "../../services/reducers";
 import { useDispatch, useSelector } from "../../services/hooks";
 
 export function ProfileEdit() {
