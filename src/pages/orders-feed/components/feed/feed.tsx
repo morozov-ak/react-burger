@@ -19,24 +19,6 @@ export function Feed() {
     }
   );
 
-  const dispatch = useDispatch();
-  
-
-  useEffect(() => { 
-    if (isLoaded) {
-      dispatch(getUserInfoReducer() as any);
-    }
-
-    return () => {
-      dispatch({ type: CLEAR_PROFILE });
-    };
-  }, [dispatch, isLoaded]);
-  
-
-
-
-
-
   if (orders?.length) {
     return (
         <section className={styles.content}>

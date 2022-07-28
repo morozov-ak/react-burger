@@ -5,14 +5,14 @@ import styles from "./ingredientsSet.module.css";
 
 
 type PropsType = {
-  order: TOrder;
+  ingredients: Array<string>;
 }
 
-export const  IngredientsSet:FunctionComponent<PropsType> = ({order}) => {
+export const  IngredientsSet:FunctionComponent<PropsType> = ({ingredients}) => {
   return (
     <div className={styles.orderContainer}>
-          {order.ingredients.slice(0,-1).reverse().map((ingredient,index) => (
-           <IngredientsIcon key={`${ingredient}${order._id}${index}`} ingredient={ingredient} />
+          {ingredients.reverse().map((ingredient,index) => (
+           <IngredientsIcon key={`${ingredient}${index}`} ingredient={ingredient} />
           ))}  
     </div>
   );

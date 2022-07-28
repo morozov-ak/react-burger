@@ -6,12 +6,13 @@ import { useSelector } from "react-redux";
 import { TStore } from "../../services/reducers";
 
 export const IngredientDetails = memo(() => {
+  let { id }:{id:string} = useParams();
+  
   const ingredients = useSelector((state:TStore) => state.ingredients.ingredients);
 
-  let { id }:{id:string} = useParams();
-
-  const { image_large, name, calories, fat, proteins, carbohydrates } =
-    ingredients.filter((ingredient) => id === ingredient._id)[0];
+if(ingredients.length){
+    const { image_large, name, calories, fat, proteins, carbohydrates } =
+    ingredients?.filter((ingredient) => id === ingredient._id)[0];
 
   return (
     <section className={`pb-15 ${styles.card}`}>
@@ -24,5 +25,6 @@ export const IngredientDetails = memo(() => {
         <IngredientNutritions title="Углеводы, г" value={carbohydrates} />
       </div>
     </section>
-  );
+  );}
+  return null
 });

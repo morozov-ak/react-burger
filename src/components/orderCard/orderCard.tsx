@@ -38,6 +38,16 @@ export const  OrderCard:FunctionComponent<PropsType> = ({order,type='orders'}) =
     }
   },[order.status]) 
 
+  let uniqueIngredients = order.ingredients.reduce((acc, ing) => {
+    if(acc.includes(ing)){
+      return acc
+    }if(ing=== null){
+      return acc
+    }
+
+    return [...acc,ing]
+  }, [] as Array<string>)
+
 
 
   return (
@@ -62,7 +72,7 @@ export const  OrderCard:FunctionComponent<PropsType> = ({order,type='orders'}) =
 
         <div className={styles.ingredientsContainer}>
           <ul className={styles.ingredientsList}>
-            <IngredientsSet order={order}/>
+            <IngredientsSet ingredients={uniqueIngredients}/>
           </ul>
           <p className={styles.priceContainer}>
             <span className="text text_type_digits-default mr-2">

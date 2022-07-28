@@ -104,6 +104,7 @@ export function initialReducer() {
     }
   };
 }
+
 export function resetPasswordReducer(email:string, cb:()=> void) {
   return async (dispatch: Dispatch) => {
     try {

@@ -1,4 +1,5 @@
-import { Middleware } from "redux";
+import { TStore } from './../reducers/index';
+import { Middleware, MiddlewareAPI } from "redux";
 import { getCookie } from "../../utils/getCookie";
 
 export const socketMiddleware = (

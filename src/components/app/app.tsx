@@ -94,9 +94,9 @@ function App() {
           <OrdersFeed />
         </Route>
 
-        <ProtectedRoute exact path="/feed/:id">
+        <Route exact path="/feed/:id">
           <OrderDetailsPage />
-        </ProtectedRoute>
+        </Route>
 
 
         <Route path="/ingredient/:id">

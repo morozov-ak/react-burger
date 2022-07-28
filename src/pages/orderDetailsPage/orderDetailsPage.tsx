@@ -1,7 +1,7 @@
  import React, { useEffect, useMemo } from "react";
 import styles from "./orderDetailsPage.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { TStore } from "../../services/reducers";
 import { IngredientsIcon } from "../../components/ingredientIcon/ingredientIcon";
@@ -21,11 +21,12 @@ const OrderDetailsPage = () => {
 
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch()
+  const location:any = useLocation()
   const isOrders = useRouteMatch("/profile/orders")
   const isFeed = useRouteMatch("/feed")
 
   useEffect(() => {
-    if (!Object.keys(ordersById).length) {
+    if (!location?.state?.background) {
       if(isOrders){
         dispatch({
           type: WS_START_WITH_CUSTOM_URL,
@@ -70,6 +71,17 @@ const OrderDetailsPage = () => {
 
   let totalPrice = 0
   let countedIngredients:{[key: string]: number}
+
+  let uniqueIngredients = order.ingredients.reduce((acc, ing) => {
+    if(acc.includes(ing)){
+      return acc
+    }if(ing=== null){
+      return acc
+    }
+
+    return [...acc,ing]
+  }, [] as Array<string>)
+
   if(Object.keys(ingredientsById)){
     countedIngredients = order?.ingredients.reduce((res,ingredient) => {
       totalPrice += ingredientsById[ingredient] ? ingredientsById[ingredient].price : 0
@@ -96,13 +108,12 @@ const OrderDetailsPage = () => {
       <p className="text text_type_main-medium mb-6">Состав:</p>
       <ul className={"custom-scroll mb-10"}>
         
-        {order.ingredients.slice(0,-1).map((ingredient, index) => 
+        {uniqueIngredients.map((ingredient, index) => 
           {const ingredientObject = ingredientsById[ingredient]
           if(ingredientObject){
             return <li key={`${ingredientObject._id}${index}`} className={styles.ingredient}>
             <div className={styles.leftSide}>
               <IngredientsIcon
-              
                 ingredient={ingredientObject._id}
               />
               <p className="text text_type_main-default ml-4">

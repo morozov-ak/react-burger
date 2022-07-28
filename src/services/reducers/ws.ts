@@ -62,7 +62,6 @@ export const wsOrdersReducer = (state:TWsOrdersState = initialState, action:Acti
       }
 
       case WS_GET_MESSAGE: {
-        console.log('new arrived')
         return {
           ...state,
           orders: action.payload.orders,
