@@ -6,13 +6,9 @@ import {
   REMOVE_INGREDIENT,
 } from "../actions/bun";
 
-type TCreatedBun = {
-  bun: string | undefined,
-  filling: Array<TIngredient>,
-}
-
 export type TBurgerConstructor = {
-  createdBun: TCreatedBun,
+  bun: TIngredient | undefined,
+  filling: Array<TIngredient>,
   fillingIds: Array<string>,
   bunId: Array<string>,
 }
@@ -33,12 +29,10 @@ export type ConstructorActions =
 
 
 const initialState = {
-  createdBun: {
-    bun: undefined,
-    filling: [] as Array<TIngredient>,
-  } as any,
-  fillingIds: [] as Array<string>,
-  bunId: [] as Array<string>,
+  bun: undefined,
+  filling: [],
+  fillingIds: [],
+  bunId: [],
 };
 
 export const burgerConstructorReducer = (state:TBurgerConstructor = initialState, action:ConstructorActions) => {
@@ -47,42 +41,36 @@ export const burgerConstructorReducer = (state:TBurgerConstructor = initialState
       if (action.item.type === "bun") {
         return {
           ...state,
-          createdBun: { ...state.createdBun, bun: action.item },
+          bun: action.item,
           bunId: [action.item._id, action.item._id],
         };
       } else {
         return {
           ...state,
-          createdBun: {
-            ...state.createdBun,
-            filling: [...state.createdBun.filling, action.item],
-          },
+          filling: [...state.filling, action.item],
           fillingIds: [...state.fillingIds, action.item._id],
         };
       }
     }
 
     case MOVE_INGREDIENT: {
-      const targetIndex = state.createdBun.filling.findIndex(
+      const targetIndex = state.filling.findIndex(
         (item) => item.uid === action.targetItem.uid
       );
-      const sourceIndex = state.createdBun.filling.findIndex(
+      const sourceIndex = state.filling.findIndex(
         (item) => item.uid === action.sourceItem.uid
       );
-      const newFilling = new Array(...state.createdBun.filling);
+      const newFilling = new Array(...state.filling);
       newFilling.splice(sourceIndex, 1);
       newFilling.splice(targetIndex, 0, action.sourceItem);
       return {
         ...state,
-        createdBun: {
-          ...state.createdBun,
-          filling: newFilling,
-        },
+        filling: newFilling,
       };
     }
 
     case REMOVE_INGREDIENT: {
-      const newFilling = new Array(...state.createdBun.filling);
+      const newFilling = new Array(...state.filling);
       const newFillingIds = new Array(...state.fillingIds);
       const sourceIndexFillings = newFilling.findIndex(
         (item) => item.uid === action.payload.uid
@@ -95,10 +83,7 @@ export const burgerConstructorReducer = (state:TBurgerConstructor = initialState
 
       return {
         ...state,
-        createdBun: {
-          ...state.createdBun,
-          filling: newFilling,
-        },
+        filling: newFilling,
         fillingIds: newFillingIds,
       };
     }

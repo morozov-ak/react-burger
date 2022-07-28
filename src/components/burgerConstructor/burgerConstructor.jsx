@@ -21,9 +21,14 @@ import { useDispatch, useSelector } from "../../services/hooks";
 
 const BurgerConstructor = memo(() => {
   const dispatch = useDispatch();
-  const { bun = 0, filling } = useSelector(
-    (state) => state.burgerConstructor.createdBun
-  );
+
+  const { bun = 0, filling } = useSelector((state) => {
+    return {
+      bun: state.burgerConstructor.bun,
+      filling: state.burgerConstructor.filling,
+    };
+  });
+
   const { fillingIds, bunId, orderId, isOpenedOrederModal, isAuthenticated } =
     useSelector((state) => {
       return {
