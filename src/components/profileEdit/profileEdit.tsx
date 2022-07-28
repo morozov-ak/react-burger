@@ -4,7 +4,6 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import {
   SET_NAME_PROFILE,
   SET_EMAIL_PROFILE,
@@ -15,10 +14,11 @@ import {
   RESET_PROFILE,
 } from "../../services/actions";
 import { TStore } from "../../services/reducers";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 export function ProfileEdit() {
   const { name, email, password, isChanged, isLoaded } = useSelector(
-    (state:TStore) => {
+    (state) => {
       return {
         isLoaded: state.auth.isLoaded,
         isChanged: state.profileForm.isChanged,

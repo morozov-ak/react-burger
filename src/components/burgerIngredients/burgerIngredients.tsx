@@ -3,9 +3,9 @@ import React, { useMemo, useState } from "react";
 import styles from "./burgerIngredients.module.css";
 import BurgerIngredient from "../burgerIngredient/burgerIngredient";
 import { useInView } from "react-intersection-observer";
-import { useSelector } from "react-redux";
 import { TStore } from "../../services/reducers";
 import { TIngredient } from "../../types/types";
+import { useSelector } from "../../services/hooks";
 
 declare module 'react' {
   interface FunctionComponent<P = {}> {
@@ -19,7 +19,7 @@ export type TSortIngredients = {
 
 function BurgerIngredients() {
   const [current, setCurrent] = useState("bun");
-  const ingredients = useSelector((state:TStore) => state.ingredients.ingredients);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
 
   const [bunRef] = useInView({
     threshold: 1,

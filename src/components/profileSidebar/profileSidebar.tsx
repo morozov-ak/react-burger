@@ -1,12 +1,12 @@
 import React, {  FunctionComponent, useCallback } from "react";
 import styles from "./profileSidebar.module.css";
 
-import { useDispatch,  } from "react-redux";
 import {
 
   logoutReducer,
 } from "../../services/actions";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "../../services/hooks";
 
 
 

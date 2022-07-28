@@ -4,7 +4,6 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import {
   SET_NAME_REGISTRATION,
   SET_EMAIL_REGISTRATION,
@@ -15,9 +14,10 @@ import {
 } from "../../services/actions";
 import { Link } from "react-router-dom";
 import { TStore } from "../../services/reducers";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 export function RegistrationPage() {
-  const { name, email, password, isHidePassword } = useSelector((state:TStore) => {
+  const { name, email, password, isHidePassword } = useSelector((state) => {
     return {
       name: state.registrationForm.name,
       email: state.registrationForm.email,

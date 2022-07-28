@@ -40,7 +40,7 @@ export type ResetProfileAction = {
   type: typeof RESET_PROFILE,
 };
 
-export type Actions = SetNameAction | SetEmailAction | SetPasswordAction | ClearProfileAction | SetProfileAction | ResetProfileAction;
+export type ProfileActions = SetNameAction | SetEmailAction | SetPasswordAction | ClearProfileAction | SetProfileAction | ResetProfileAction;
 
 const initialState = {
   isChanged: false,
@@ -54,7 +54,7 @@ const initialState = {
 
 export const profileReducer = (
   state: TProfileStore = initialState,
-  action: Actions
+  action: ProfileActions
 ) => {
   switch (action.type) {
     case SET_NAME_PROFILE: {

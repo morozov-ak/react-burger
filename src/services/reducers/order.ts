@@ -7,21 +7,19 @@ import {
 } from "../actions/bun";
 
 export type TOrderStore = {
-  error: boolean,
-  orderId: string | null,
+  errorOrder: string,
+  orderId: number | null,
   orderedBurgerName: string | null,
   isOpenedOrederModal: boolean,
 }
 
 export type OpenOrderModalAction = { type: typeof OPEN_ORDER_MODAL}
 export type CloseOrderModalAction = { type: typeof CLOSE_ORDER_MODAL}
-export type SetErrorAction = { type: typeof SET_ERROR,error:string }
+export type SetErrorAction = { type: typeof SET_ERROR, error:string }
 export type SuccessOrderAction = { type: typeof SUCCESS_ORDER, payload: {order:{number:number}, name:string } }
 export type ResetOrderAction = { type: typeof RESET_ORDER }
 
-
-
-export type Actions =
+export type OrderActions =
     | OpenOrderModalAction
     | CloseOrderModalAction
     | SetErrorAction
@@ -29,13 +27,13 @@ export type Actions =
     | ResetOrderAction
 
 const initialState = {
-  error: false,
+  errorOrder: '',
   orderId: null,
   orderedBurgerName: null,
   isOpenedOrederModal: false,
 };
 
-export const orderReducer = (state:TOrderStore = initialState, action:Actions) => {
+export const orderReducer = (state:TOrderStore = initialState, action:OrderActions) => {
   switch (action.type) {
     case OPEN_ORDER_MODAL: {
       return {
@@ -47,7 +45,7 @@ export const orderReducer = (state:TOrderStore = initialState, action:Actions) =
     case CLOSE_ORDER_MODAL: {
       return {
         ...state,
-        error: false,
+        errorOrder: '',
         orderId: null,
         orderedBurgerName: null,
 
@@ -66,18 +64,12 @@ export const orderReducer = (state:TOrderStore = initialState, action:Actions) =
     case SET_ERROR: {
       return {
         ...state,
-        error: action.error,
+        errorOrder: action.error,
       };
     }
 
     case RESET_ORDER: {
-      return {
-        error: false,
-        orderId: null,
-        orderedBurgerName: null,
-
-        isOpenedOrederModal: false,
-      };
+      return initialState;
     }
 
     default: {

@@ -1,10 +1,10 @@
 import styles from "./ordersFeed.module.css";
 import { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
 import { wsActions } from "../../services/actions/ws";
 import { Feed } from "./components/feed/feed";
 import { Statistics } from "./components/statistics/statistics";
+import { useDispatch } from "../../services/hooks";
 
 const OrdersFeed = () => {
   const dispatch = useDispatch();

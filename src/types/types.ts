@@ -13,5 +13,5 @@ export type TIngredient = {
     image_large: string;
     __v?: number;
     productId:string;
-    uid?:string;
+    uid?:string|number;
 }

@@ -1,15 +1,16 @@
 import { TStore } from './../reducers/index';
 import { Middleware, MiddlewareAPI } from "redux";
 import { getCookie } from "../../utils/getCookie";
+import { AppDispatch, RootState } from '../..';
 
 export const socketMiddleware = (
   wsUrl: string,
-  wsActions: { [key: string]: string }
+  wsActions: any
 ): Middleware => {
-  return (store) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
-    return (next) => (action: any) => {
+    return (next) => (action) => {
       const { dispatch } = store;
       const  accessToken  = getCookie("accessToken");
       const { type, payload } = action;

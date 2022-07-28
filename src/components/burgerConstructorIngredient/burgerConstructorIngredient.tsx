@@ -4,7 +4,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { memo, useCallback } from "react";
 import styles from "./burgerConstructorIngredient.module.css";
-import { useDispatch } from "react-redux";
 import {
   ADD_INGREDIENT,
   MOVE_INGREDIENT,
@@ -12,6 +11,7 @@ import {
 } from "../../services/actions/bun";
 import { useDrag, useDrop } from "react-dnd";
 import { TIngredient } from "../../types/types";
+import { useDispatch } from "../../services/hooks";
 
 type TBurgerConstructorIngredient={
   ingredient: TIngredient

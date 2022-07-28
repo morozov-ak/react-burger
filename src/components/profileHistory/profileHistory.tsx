@@ -1,18 +1,18 @@
 import React, {  useEffect } from "react";
 import styles from "./profileHistory.module.css";
 
-import { useDispatch, useSelector } from "react-redux";
 
 import { TStore } from "../../services/reducers";
-import { WS_CONNECTION_CLOSE, WS_START_WITH_CUSTOM_URL } from "../../services/actions/ws";
+import { wsActions, WS_CONNECTION_CLOSE, WS_START_WITH_CUSTOM_URL } from "../../services/actions/ws";
 import { getCookie } from "../../utils/getCookie";
 import { WS_URL } from "../../constants/constants";
 import { OrderCard } from "../orderCard/orderCard";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 export function ProfileHistory() {
 
   const { orders } = useSelector(
-    (state:TStore) => {
+    (state) => {
       return {
         orders: state.wsOrders.orders,
       };
@@ -28,7 +28,7 @@ export function ProfileHistory() {
       });
 
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSE });
+      dispatch({ type: wsActions.wsClose });
     };
   }, [dispatch]);
 

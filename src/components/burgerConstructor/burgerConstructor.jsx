@@ -8,7 +8,6 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { Modal } from "../modal/modal";
 import { OrderDetails } from "../orderDetails/orderDetails";
 import styles from "./burgerConstructor.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGREDIENT,
   CLOSE_ORDER_MODAL,
@@ -18,6 +17,7 @@ import {
 import { useDrop } from "react-dnd";
 import BurgerConstructorIngredient from "../burgerConstructorIngredient/burgerConstructorIngredient";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 const BurgerConstructor = memo(() => {
   const dispatch = useDispatch();

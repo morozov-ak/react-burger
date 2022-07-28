@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./ingredientInfoPage.module.css";
 
-import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 import { IngredientDetails } from "../../components/ingredientDetails/ingredientDetails";
 import { TStore } from "../../services/reducers";
+import { useSelector } from "../../services/hooks";
 
 export function IngredientInfoPage() {
   let { id }:{id:string} = useParams();

@@ -18,7 +18,7 @@ export type TogglePasswordAction = { type: typeof TOGGLE_PASSWORD_LOGIN }
 
 
 
-export type Actions =
+export type LoginActions =
     | SetEmailLoginAction
     | SetPasswordLoginAction
     | ClearAction
@@ -31,7 +31,7 @@ const initialState = {
   isHidePassword: true,
 };
 
-export const loginReducer = (state:TLoginStore = initialState, action:Actions) => {
+export const loginReducer = (state:TLoginStore = initialState, action:LoginActions) => {
   switch (action.type) {
     case SET_EMAIL_LOGIN: {
       return {

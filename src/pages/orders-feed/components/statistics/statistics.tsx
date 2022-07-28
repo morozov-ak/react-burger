@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import styles from "./statistics.module.css";
-import { useSelector } from "react-redux";
 import { TStore } from "../../../../services/reducers";
+import { useSelector } from "../../../../services/hooks";
 
 export function Statistics() {
 
   const {  orders, total, totalToday } = useSelector(
-    (state:TStore) => {
+    (state) => {
       return {
         total: state.wsOrders.total,
         totalToday: state.wsOrders.totalToday,

@@ -19,9 +19,7 @@ export type TogglePasswordAction = { type: typeof TOGGLE_PASSWORD_RESET }
 export type ClearAction = { type: typeof CLEAR_RESET }
 export type SetIsResettedAction = { type: typeof SET_IS_RESETED }
 
-
-
-export type Actions =
+export type ResetActions =
     | SetCodeAction
     | SetPasswordAction
     | TogglePasswordAction
@@ -35,7 +33,7 @@ const initialState = {
   isHidePassword: true,
 };
 
-export const resetPasswordReducer = (state:TResetStore = initialState, action:Actions) => {
+export const resetPasswordReducer = (state:TResetStore = initialState, action:ResetActions) => {
   switch (action.type) {
     case SET_CODE_RESET: {
       return {

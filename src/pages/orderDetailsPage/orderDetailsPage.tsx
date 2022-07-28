@@ -1,18 +1,16 @@
  import React, { useEffect, useMemo } from "react";
 import styles from "./orderDetailsPage.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useHistory, useLocation, useParams, useRouteMatch } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { TStore } from "../../services/reducers";
+import { useLocation, useParams, useRouteMatch } from "react-router-dom";
 import { IngredientsIcon } from "../../components/ingredientIcon/ingredientIcon";
 import { formatDate } from "../../utils/formatDate";
 import { wsActions, WS_START_WITH_CUSTOM_URL } from "../../services/actions/ws";
-import { useDispatch } from "react-redux";
 import { WS_URL } from "../../constants/constants";
 import { getCookie } from "../../utils/getCookie";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 const OrderDetailsPage = () => {
-    const { ordersById, ingredientsById } = useSelector((state:TStore) => {
+    const { ordersById, ingredientsById } = useSelector((state) => {
     return {
       ordersById: state.wsOrders.ordersById,
       ingredientsById: state.ingredients.ingredientsById,

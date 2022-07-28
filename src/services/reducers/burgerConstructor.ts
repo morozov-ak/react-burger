@@ -6,11 +6,13 @@ import {
   REMOVE_INGREDIENT,
 } from "../actions/bun";
 
+type TCreatedBun = {
+  bun: string | undefined,
+  filling: Array<TIngredient>,
+}
+
 export type TBurgerConstructor = {
-  createdBun: {
-    bun: string | undefined,
-    filling: Array<TIngredient>,
-  },
+  createdBun: TCreatedBun,
   fillingIds: Array<string>,
   bunId: Array<string>,
 }
@@ -22,7 +24,7 @@ export type CloseOrderAction = { type: typeof CLOSE_ORDER_MODAL }
 
 
 
-export type Actions =
+export type ConstructorActions =
     | AddIngredientAction
     | MoveIngredientAction
     | CloseOrderAction
@@ -33,13 +35,13 @@ export type Actions =
 const initialState = {
   createdBun: {
     bun: undefined,
-    filling: [],
-  },
-  fillingIds: [],
-  bunId: [],
+    filling: [] as Array<TIngredient>,
+  } as any,
+  fillingIds: [] as Array<string>,
+  bunId: [] as Array<string>,
 };
 
-export const burgerConstructorReducer = (state:TBurgerConstructor = initialState, action:Actions) => {
+export const burgerConstructorReducer = (state:TBurgerConstructor = initialState, action:ConstructorActions) => {
   switch (action.type) {
     case ADD_INGREDIENT: {
       if (action.item.type === "bun") {
@@ -102,14 +104,7 @@ export const burgerConstructorReducer = (state:TBurgerConstructor = initialState
     }
 
     case CLOSE_ORDER_MODAL: {
-      return {
-        createdBun: {
-          bun: undefined,
-          filling: [],
-        },
-        fillingIds: [],
-        bunId: [],
-      };
+      return initialState;
     }
 
     default: {

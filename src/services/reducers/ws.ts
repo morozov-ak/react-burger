@@ -1,18 +1,20 @@
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_SEND_MESSAGE, WS_START_WITH_CUSTOM_URL } from "../actions/ws";
+import { WS_CONNECTION_CLOSE, WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_SEND_MESSAGE, WS_START_WITH_CUSTOM_URL } from "../actions/ws";
 
-export type WsInitAction = { type: typeof WS_CONNECTION_START ,payload:string}
+export type WsInitAction = { type: typeof WS_CONNECTION_START}
 export type wsInitCustomAction = { type: typeof WS_START_WITH_CUSTOM_URL ,payload:string}
 export type wsSendMessageAction = { type: typeof WS_SEND_MESSAGE ,payload:string}
-export type onOpenAction = { type: typeof WS_CONNECTION_SUCCESS ,payload:string}
-export type onCloseAction = { type: typeof WS_CONNECTION_CLOSED ,payload:string}
+export type onOpenAction = { type: typeof WS_CONNECTION_SUCCESS }
+export type onClosedAction = { type: typeof WS_CONNECTION_CLOSED}
+export type onCloseAction = { type: typeof WS_CONNECTION_CLOSE }
 export type onErrorAction = { type: typeof WS_CONNECTION_ERROR ,payload:string}
 export type onMessageAction = { type: typeof WS_GET_MESSAGE ,payload:TWsOrdersState}
 
-export type Actions =
+export type WsActions =
     | WsInitAction 
     | wsInitCustomAction 
     | wsSendMessageAction
     | onOpenAction
+    | onClosedAction
     | onCloseAction
     | onErrorAction
     | onMessageAction
@@ -52,12 +54,11 @@ export const initialState: TWsOrdersState = {
 };
 
 
-export const wsOrdersReducer = (state:TWsOrdersState = initialState, action:Actions) => {
+export const wsOrdersReducer = (state:TWsOrdersState = initialState, action:WsActions) => {
     switch (action.type) {
       case WS_CONNECTION_START: {
         return {
           ...state,
-          code: action.payload,
         };
       }
 
@@ -69,7 +70,7 @@ export const wsOrdersReducer = (state:TWsOrdersState = initialState, action:Acti
           totalToday: action.payload.totalToday,
           ordersById: action.payload?.orders.reduce(
             (prev, order) => {return {...prev, [order._id]:order}}
-            , {} as TOrder
+            , {} as {[key: string]: TOrder}
             )
         };
       }

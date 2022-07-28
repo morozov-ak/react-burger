@@ -7,8 +7,8 @@ import { TOrder } from "../../services/reducers/ws";
 import { Link, useLocation } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
 import { IngredientsSet } from "./ingredientsSet/ingredientsSet";
-import { useSelector } from "react-redux";
 import { TStore } from "../../services/reducers";
+import { useSelector } from "../../services/hooks";
 
 type PropsType = {
   order:TOrder
@@ -16,7 +16,7 @@ type PropsType = {
 }
 
 export const  OrderCard:FunctionComponent<PropsType> = ({order,type='orders'}) => {
-  const ingredientsById = useSelector((state:TStore) => state.ingredients.ingredientsById);
+  const ingredientsById = useSelector((state) => state.ingredients.ingredientsById);
   const location = useLocation();
 
   let totalCost = useMemo(() => 

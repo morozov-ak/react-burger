@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import NavigationPanel from "../appHeader/appHeader";
 import styles from "./app.module.css";
-import { useSelector, useDispatch } from "react-redux";
 import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 import {
   fetchIngredientsReducer,
@@ -23,14 +22,14 @@ import { Modal } from "../modal/modal";
 import { IngredientDetails } from "../ingredientDetails/ingredientDetails";
 import { LoginedRoute } from "../loginedRoute/loginedRoute";
 import { OrdersPage } from "../../pages/ordersPage/ordersPage";
-import { TStore } from "../../services/reducers";
 import OrderDetailsPage from "../../pages/orderDetailsPage/orderDetailsPage";
 import OrdersFeed from "../../pages/orders-feed/ordersFeed";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 function App() {
-  const { error, isReseted } = useSelector((state:TStore) => {
+  const { error, isReseted } = useSelector((state) => {
     return {
-      error: state.order.error,
+      error: state.order.errorOrder,
       isReseted: state.resetPasswordForm.isReseted,
     };
   });

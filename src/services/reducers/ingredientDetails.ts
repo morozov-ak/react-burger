@@ -9,7 +9,7 @@ export type TIngredientDetailsStore = {
 export type OpenNutritionsModalAction = { type: typeof OPEN_NUTRITIONS_MODAL, showedIngredientId:string}
 export type CloseNutritionsModalAction = { type: typeof CLOSE_NUTRITIONS_MODAL }
 
-export type Actions =
+export type DetailsActions =
     | OpenNutritionsModalAction
     | CloseNutritionsModalAction
 
@@ -18,7 +18,7 @@ const initialState = {
   showedIngredientId: "",
 };
 
-export const ingredientDetailsReducer = (state:TIngredientDetailsStore = initialState, action:Actions) => {
+export const ingredientDetailsReducer = (state:TIngredientDetailsStore = initialState, action:DetailsActions) => {
   switch (action.type) {
     case OPEN_NUTRITIONS_MODAL: {
       return {

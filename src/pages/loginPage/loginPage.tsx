@@ -4,7 +4,6 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import {
   CLEAR_LOGIN,
   loginReducer,
@@ -14,10 +13,11 @@ import {
 } from "../../services/actions";
 import { Link, Redirect, useLocation } from "react-router-dom";
 import { TStore } from "../../services/reducers";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 export const LoginPage = memo(() => {
   const { email, password, isHidePassword, isAuthenticated } = useSelector(
-    (state:TStore) => {
+    (state) => {
       return {
         email: state.loginForm.email,
         password: state.loginForm.password,

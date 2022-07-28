@@ -2,13 +2,13 @@ import React, { memo } from "react";
 import styles from "./ingredientDetails.module.css";
 import { IngredientNutritions } from "../ingredientNutritions/ingredientNutritions";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { TStore } from "../../services/reducers";
+import { useSelector } from "../../services/hooks";
 
 export const IngredientDetails = memo(() => {
   let { id }:{id:string} = useParams();
   
-  const ingredients = useSelector((state:TStore) => state.ingredients.ingredients);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
 
 if(ingredients.length){
     const { image_large, name, calories, fat, proteins, carbohydrates } =

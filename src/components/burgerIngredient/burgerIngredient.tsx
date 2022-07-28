@@ -4,18 +4,18 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { memo, useMemo } from "react";
-import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
 import { TIngredient } from "../../types/types";
 import { TStore } from "../../services/reducers";
+import { useSelector } from "../../services/hooks";
 
 type TBurgerIngredient={
   ingredient: TIngredient
 }
 
 const BurgerIngredient = memo(({ ingredient }:TBurgerIngredient) => {
-  const { fillingIds, bunId } = useSelector((state:TStore) => {
+  const { fillingIds, bunId } = useSelector((state) => {
     return {
       showedIngredientId: state.ingredientDetails.showedIngredientId,
       fillingIds: state.burgerConstructor.fillingIds,

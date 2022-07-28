@@ -9,8 +9,8 @@ export type TIngredientsStore = {
 export type FetchIngredientsAction = { type: typeof FETCH_INGREDIENTS ,payload:Array<TIngredient>}
 
 const initialState = {
-  ingredients: [],
-  ingredientsById: {},
+  ingredients: [] as Array<TIngredient>,
+  ingredientsById: {} as {[key: string]: TIngredient},
 };
 
 export const ingredientReducer = (state = initialState, action:FetchIngredientsAction) => {
@@ -21,7 +21,7 @@ export const ingredientReducer = (state = initialState, action:FetchIngredientsA
         ingredients: action.payload,
         ingredientsById: action.payload.reduce(
           (prev, ingredient) => {return {...prev, [ingredient._id]:ingredient}}
-          , {} as TIngredient
+          , {} as {[key: string]: TIngredient}
           )
       };
     }

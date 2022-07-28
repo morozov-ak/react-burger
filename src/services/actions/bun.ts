@@ -1,7 +1,7 @@
 import { fetchIngredients } from "../../api/fetchIngredients";
 import { postOrder } from "../../api/postOrder";
-import { Dispatch } from "redux";
 import { TIngredient } from "../../types/types";
+import { AppDispatch } from "../..";
 
 export const FETCH_INGREDIENTS = "FETCH_INGREDIENTS";
 export const OPEN_NUTRITIONS_MODAL = "OPEN_NUTRITIONS_MODAL";
@@ -17,7 +17,7 @@ export const SUCCESS_ORDER = "SUCCESS_ORDER";
 export const SUCCESS_RESET = "SUCCESS_RESET";
 
 export function fetchIngredientsReducer() {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await fetchIngredients();
       dispatch({ type: FETCH_INGREDIENTS, payload: res.data });
@@ -28,7 +28,7 @@ export function fetchIngredientsReducer() {
 }
 
 export function makeOrder(ingredientsArray:Array<TIngredient>) {
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
       const res = await postOrder(ingredientsArray);
       if (res.success) {

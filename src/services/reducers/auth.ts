@@ -10,7 +10,7 @@ export type SetAuthenticatedAction = { type: typeof SET_AUTHENTICATED,payload:bo
 
 
 
-export type Actions =
+export type AuthActions =
     | SetIsLoadedAction
     | SetAuthenticatedAction
 
@@ -21,7 +21,7 @@ const initialState = {
   isAuthenticated: false,
 };
 
-export const authReducer = (state:TAuthStore = initialState, action:Actions) => {
+export const authReducer = (state:TAuthStore = initialState, action:AuthActions) => {
   switch (action.type) {
     case SET_ISLOADED: {
       return {

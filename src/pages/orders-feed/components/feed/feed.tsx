@@ -1,19 +1,17 @@
-import React, {  useEffect } from "react";
+import React from "react";
 import styles from "./feed.module.css";
 
-import { useDispatch, useSelector } from "react-redux";
 import { TStore } from "../../../../services/reducers";
-import { CLEAR_PROFILE, getUserInfoReducer } from "../../../../services/actions";
 import { OrderCard } from "../../../../components/orderCard/orderCard";
+import { useSelector } from "../../../../services/hooks";
 
 
 
 export function Feed() {
 
-  const { isLoaded,orders } = useSelector(
-    (state:TStore) => {
+  const { orders } = useSelector(
+    (state) => {
       return {
-        isLoaded: state.auth.isLoaded,
         orders: state.wsOrders.orders,
       };
     }

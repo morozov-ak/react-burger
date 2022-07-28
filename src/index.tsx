@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
-import { compose, createStore, applyMiddleware } from 'redux';
+import { compose, createStore, applyMiddleware, ActionCreator, Action } from 'redux';
 import { Provider } from 'react-redux';
-import { rootReducer } from './services/reducers/index';
-import thunk from 'redux-thunk';
+import { TApplicationActions, rootReducer } from './services/reducers/index';
+import thunk, { ThunkAction } from 'redux-thunk';
 import { BrowserRouter as Router} from "react-router-dom";
 import { socketMiddleware } from './services/middleware/socketMiddleware';
 import { wsActions } from './services/actions/ws';
@@ -33,6 +33,13 @@ const enhancer = composeEnhancers(applyMiddleware(thunk,socketMiddleware(
 
 const store = createStore(rootReducer, enhancer);
 
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppThunk<TReturn = void> = ActionCreator<
+  ThunkAction<TReturn, Action, RootState, TApplicationActions>
+>; 
+
+export type AppDispatch = typeof store.dispatch; 
 
 root.render(
   <Router>
