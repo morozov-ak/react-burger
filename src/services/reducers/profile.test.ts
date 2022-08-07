@@ -1,4 +1,4 @@
-import { CLEAR_PROFILE, OPEN_ORDER_MODAL, RESET_PROFILE, SET_EMAIL_PROFILE, SET_NAME_PROFILE, SET_PASSWORD_PROFILE, SET_PROFILE } from '../actions';
+import { CLEAR_PROFILE, RESET_PROFILE, SET_EMAIL_PROFILE, SET_NAME_PROFILE, SET_PASSWORD_PROFILE, SET_PROFILE } from '../actions';
 import { profileReducer, TProfileStore } from './profile';
 
 describe('profile reducer', () => {
