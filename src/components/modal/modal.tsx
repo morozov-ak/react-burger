@@ -53,7 +53,7 @@ export const Modal:FunctionComponent<TModal> = memo(({ onClose, headerText, chil
   const ModalComponent = (
     <>
       <ModalOverlay onClose={onClose || back} />
-      <section className={`${styles.modal}`}>
+      <section className={`${styles.modal}`}  id='modal'>
         <>
         <header className={`ml-10 mt-10 mr-10 ${styles.header}`}>
           {headerText && (
