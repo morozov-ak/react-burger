@@ -57,7 +57,7 @@ describe('registration reducer', () => {
     expect(registrationReducer(initialState as any, action as any)).toEqual(expected)
   })
 
-  it('should cleasr form', () => {
+  it('should clear form', () => {
     const state = {
       name: "name",
       email: "email",

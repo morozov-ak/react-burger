@@ -1,7 +1,5 @@
-import { SET_CODE_RESET, SET_IS_RESETED, TOGGLE_PASSWORD_RESET } from '../actions';
 import { WS_CONNECTION_CLOSED, WS_GET_MESSAGE } from '../actions/ws';
 import { wsMock } from './mocks';
-import { resetPasswordReducer, TResetStore } from './resetPassword';
 import { TWsOrdersState, wsOrdersReducer } from './ws';
 
 describe('websocket reducer', () => {
@@ -52,7 +50,7 @@ describe('websocket reducer', () => {
     expect(wsOrdersReducer(initialState as any, action as any)).toEqual(expected)
   })
 
-  it('should set reset code', () => {
+  it('should reset state', () => {
     const state: TWsOrdersState = {
       orders: [{
         _id: '62b0a994fa747e001bd53781',

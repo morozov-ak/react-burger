@@ -1,4 +1,4 @@
-import { SET_CODE_RESET, SET_IS_RESETED, TOGGLE_PASSWORD_RESET } from '../actions';
+import { SET_CODE_RESET, SET_IS_RESETED, SET_PASSWORD_RESET, TOGGLE_PASSWORD_RESET } from '../actions';
 import { resetPasswordReducer, TResetStore } from './resetPassword';
 
 describe('reset password reducer', () => {
@@ -31,6 +31,17 @@ describe('reset password reducer', () => {
     }
 
     const action = {type: SET_IS_RESETED}
+
+    expect(resetPasswordReducer(initialState as any, action as any)).toEqual(expected)
+  })
+
+  it('should set password', () => {
+    const expected = {
+      ...initialState,
+      password: 'test password',
+    }
+
+    const action = {type: SET_PASSWORD_RESET, payload: 'test password'}
 
     expect(resetPasswordReducer(initialState as any, action as any)).toEqual(expected)
   })
