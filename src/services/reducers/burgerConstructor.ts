@@ -88,10 +88,6 @@ export const burgerConstructorReducer = (state:TBurgerConstructor = initialState
       };
     }
 
-    case CLOSE_ORDER_MODAL: {
-      return initialState;
-    }
-
     default: {
       return state;
     }

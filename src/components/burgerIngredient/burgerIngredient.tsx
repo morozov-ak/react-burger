@@ -41,6 +41,7 @@ const BurgerIngredient = memo(({ ingredient }:TBurgerIngredient) => {
       ref={dragRef}
       className={`mb-4 ${styles.ingredient}`}
       key={ingredient._id}
+      id='ingredient'
       to={{
         pathname: `/ingredient/${ingredient._id}`,
         state: { background: location },

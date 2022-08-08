@@ -26,7 +26,7 @@ export type ResetActions =
     | ClearAction
     | SetIsResettedAction
 
-const initialState = {
+const initialState:TResetStore = {
   code: "",
   password: "",
   isReseted: false,
@@ -56,15 +56,15 @@ export const resetPasswordReducer = (state:TResetStore = initialState, action:Re
       };
     }
 
-    case CLEAR_RESET: {
-      return initialState;
-    }
-
     case TOGGLE_PASSWORD_RESET: {
       return {
         ...state,
         isHidePassword: !state.isHidePassword,
       };
+    }
+
+    case CLEAR_RESET: {
+      return initialState;
     }
 
     default: {

@@ -46,7 +46,7 @@ export type TWsOrdersState = {
   totalToday: number | undefined;
 }
 
-export const initialState: TWsOrdersState = {
+const initialState: TWsOrdersState = {
   orders: [],
   ordersById: {},
   total: undefined,
@@ -78,8 +78,6 @@ export const wsOrdersReducer = (state:TWsOrdersState = initialState, action:WsAc
       case WS_CONNECTION_CLOSED: {
         return initialState;
       }
-  
-      
   
       default: {
         return state;

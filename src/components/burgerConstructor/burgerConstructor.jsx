@@ -90,9 +90,13 @@ const BurgerConstructor = memo(() => {
   }, [dispatch]);
 
   return (
-    <section className={`ml-10 ${styles.ingredients}`}>
+    <section className={`ml-10 ${styles.ingredients}`} id="constructor">
       <div className={`${styles.wrapper}`}>
-        <div className={`ml-8 ${styles.bun_top}`} ref={bunTopDropTarget}>
+        <div
+          className={`ml-8 ${styles.bun_top}`}
+          ref={bunTopDropTarget}
+          id="dropTargetBun"
+        >
           {bun ? (
             <ConstructorElement
               type="top"
@@ -117,7 +121,11 @@ const BurgerConstructor = memo(() => {
               />
             ))
           ) : (
-            <div className={`ml-8 ${styles.filling}`} ref={fillingDropTarget}>
+            <div
+              className={`ml-8 ${styles.filling}`}
+              ref={fillingDropTarget}
+              id="dropTargetFill"
+            >
               <p className={`text_type_main-default ${styles.bun_placeholder}`}>
                 Выберите начинку
               </p>

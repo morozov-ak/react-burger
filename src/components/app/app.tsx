@@ -108,7 +108,7 @@ function App() {
         <Route
           path="/ingredient/:id"
           children={
-            <Modal>
+            <Modal headerText="Детали ингредиента">
               <IngredientDetails />
             </Modal>
           }
