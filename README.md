@@ -7,4 +7,4 @@ React Stellar Burger
 3) запустите проект командой `npm start`
 4) перейдите по адресу http://localhost:3000
 
-Сайт задеплоен на сервер по адресу http://morozov.nomoredomains.sbs/
+Сайт задеплоен на сервер по адресу https://morozov.nomoredomains.sbs/
