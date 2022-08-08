@@ -43,14 +43,7 @@ export const orderReducer = (state:TOrderStore = initialState, action:OrderActio
     }
 
     case CLOSE_ORDER_MODAL: {
-      return {
-        ...state,
-        errorOrder: '',
-        orderId: null,
-        orderedBurgerName: null,
-
-        isOpenedOrederModal: false,
-      };
+      return initialState;
     }
 
     case SUCCESS_ORDER: {

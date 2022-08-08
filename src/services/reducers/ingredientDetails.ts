@@ -14,7 +14,7 @@ export type DetailsActions =
     | CloseNutritionsModalAction
 
 
-const initialState = {
+const initialState:TIngredientDetailsStore = {
   showedIngredientId: "",
 };
 
@@ -33,12 +33,6 @@ export const ingredientDetailsReducer = (state:TIngredientDetailsStore = initial
         showedIngredientId: "",
       };
     }
-
-    // case CLOSE_ORDER_MODAL: {
-    //   return {
-    //     showedIngredientId: "",
-    //   };
-    // }
 
     default: {
       return state;

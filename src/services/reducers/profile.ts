@@ -64,17 +64,7 @@ export const profileReducer = (
         isChanged: true,
       };
     }
-
-    case SET_PROFILE: {
-      return {
-        ...state,
-        name: action.payload.name,
-        email: action.payload.email,
-        nameOld: action.payload.name,
-        emailOld: action.payload.email,
-      };
-    }
-
+    
     case SET_EMAIL_PROFILE: {
       return {
         ...state,
@@ -88,6 +78,16 @@ export const profileReducer = (
         ...state,
         password: action.payload,
         isChanged: true,
+      };
+    }
+
+    case SET_PROFILE: {
+      return {
+        ...state,
+        name: action.payload.name,
+        email: action.payload.email,
+        nameOld: action.payload.name,
+        emailOld: action.payload.email,
       };
     }
 

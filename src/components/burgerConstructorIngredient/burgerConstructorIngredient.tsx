@@ -47,7 +47,7 @@ const BurgerConstructorIngredient = memo(({ ingredient }:TBurgerConstructorIngre
 
   return (
     <div ref={dragRef}>
-      <div ref={DropTarget} className={`${styles.burger_element}`}>
+      <div ref={DropTarget} className={`${styles.burger_element}`} id="dropTargetFill">
         <div className={`pl-1 pr-1 ${styles.burger_element}`}>
           <DragIcon type='primary' />
         </div>
